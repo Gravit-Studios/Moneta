@@ -1,0 +1,90 @@
+@use 'colors' as *;
+
+// Tokens semânticos — 8 papéis (background, surface, subtle, muted, default,
+// emphasis, strong, on-primary), mesma convenção do color-palette-auto:
+// neutros vêm da escala $gray-*, marca/ação vem da escala $brand-*.
+:root {
+  // Tokens — light
+  --color-background:  #{$gray-50};
+  --color-surface:     #{$white};
+  --color-subtle:      #{$gray-200};
+  --color-muted:       #{$gray-500};
+  --color-default:     #{$gray-900};
+  --color-emphasis:    #{$brand-600};
+  --color-strong:      #{$brand-700};
+  --color-on-primary:  #{$gray-50};
+
+  // Status — light
+  --color-status-info:    #{$status-info};
+  --color-status-warn:    #{$status-warn};
+  --color-status-done:    #{$status-done};
+  --color-status-pending: #{$status-pending};
+  --color-status-danger:  #{$status-danger};
+
+  // Scale — gray (light reference)
+  --scale-gray-50:  #{$gray-50};
+  --scale-gray-100: #{$gray-100};
+  --scale-gray-200: #{$gray-200};
+  --scale-gray-300: #{$gray-300};
+  --scale-gray-400: #{$gray-400};
+  --scale-gray-500: #{$gray-500};
+  --scale-gray-600: #{$gray-600};
+  --scale-gray-700: #{$gray-700};
+  --scale-gray-800: #{$gray-800};
+  --scale-gray-900: #{$gray-900};
+  --scale-gray-950: #{$gray-950};
+
+  // Scale — brand
+  --scale-brand-50:  #{$brand-50};
+  --scale-brand-100: #{$brand-100};
+  --scale-brand-200: #{$brand-200};
+  --scale-brand-300: #{$brand-300};
+  --scale-brand-400: #{$brand-400};
+  --scale-brand-500: #{$brand-500};
+  --scale-brand-600: #{$brand-600};
+  --scale-brand-700: #{$brand-700};
+  --scale-brand-800: #{$brand-800};
+  --scale-brand-900: #{$brand-900};
+  --scale-brand-950: #{$brand-950};
+}
+
+@mixin dark-tokens {
+  --color-background: #{$gray-950};
+  --color-surface:    #{$gray-900};
+  --color-subtle:     #{$gray-800};
+  --color-muted:      #{$gray-400};
+  --color-default:    #{$gray-100};
+  --color-emphasis:   #{$brand-400};
+  --color-strong:     #{$brand-300};
+  --color-on-primary: #{$gray-950};
+
+  --color-status-info:    #{$status-info-dark};
+  --color-status-warn:    #{$status-warn-dark};
+  --color-status-done:    #{$status-done-dark};
+  --color-status-pending: #{$status-pending-dark};
+  --color-status-danger:  #{$status-danger-dark};
+}
+
+// Segue o preferido do SO por padrão...
+@media (prefers-color-scheme: dark) {
+  :root { @include dark-tokens; }
+}
+
+// ...e o toggle explícito de tema sempre vence a media query, nos dois sentidos.
+:root[data-theme='dark'] { @include dark-tokens; }
+:root[data-theme='light'] {
+  --color-background: #{$gray-50};
+  --color-surface:    #{$white};
+  --color-subtle:     #{$gray-200};
+  --color-muted:      #{$gray-500};
+  --color-default:    #{$gray-900};
+  --color-emphasis:   #{$brand-600};
+  --color-strong:     #{$brand-700};
+  --color-on-primary: #{$gray-50};
+
+  --color-status-info:    #{$status-info};
+  --color-status-warn:    #{$status-warn};
+  --color-status-done:    #{$status-done};
+  --color-status-pending: #{$status-pending};
+  --color-status-danger:  #{$status-danger};
+}

@@ -1,0 +1,14 @@
+@use 'variables' as *;
+@use 'colors' as *;
+@use 'tokens';
+
+// Ponto de entrada único do design system do Moneta.
+// Componentes consomem as variáveis CSS (--color-*, --scale-*) definidas em
+// _tokens.scss, nunca as variáveis Sass ($brand-600 etc.) diretamente — isso
+// mantém o theming (light/dark) funcionando sem reprocessar Sass em runtime.
+
+body {
+  font-family: $font-sans;
+  background: var(--color-background);
+  color: var(--color-default);
+}

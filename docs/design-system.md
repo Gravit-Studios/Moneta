@@ -2,6 +2,12 @@
 
 Referência visual publicada: [Design System & Wireframes (artifact)](https://claude.ai/code/artifact/5f38c7ac-7390-4074-a338-0f819d76a61e)
 
+## Convenção de tokens
+
+Segue o mesmo formato já usado em outros projetos da Gravit Studio (`color-palette-auto`): escalas de cor com 11 stops (`50 → 950`), 8 tokens semânticos (`background`, `surface`, `subtle`, `muted`, `default`, `emphasis`, `strong`, `on-primary`), variáveis CSS `--color-*`/`--scale-*`, e a mesma escala de spacing/radius/transição (`$sp1..$sp12`, `$r-sm..$r-2xl`, `$t-fast`/`$t-base`). Implementação em código: [`apps/web/src/styles/`](../apps/web/src/styles/) — `_variables.scss` (spacing/radius/transições/fontes), `_colors.scss` (escalas gray/brand/gold + status), `_tokens.scss` (mapeamento semântico light/dark como CSS custom properties), `main.scss` (entry point).
+
+Componentes devem consumir sempre as variáveis CSS (`var(--color-emphasis)` etc.), nunca as variáveis Sass diretamente — é o que permite trocar de tema (`prefers-color-scheme` ou `data-theme`) sem reprocessar Sass em runtime, replicando o mesmo mecanismo do `color-palette-auto`.
+
 ## Conceito
 
 "Copiloto financeiro, não planilha" — a identidade precisa ter a seriedade de um livro-razão (fonte serifada em títulos, números tabulares) sem perder a leveza de um app de uso diário. O dourado representa conquista/gamificação e é usado com moderação (nunca como fundo), nunca confundido com as cores semânticas de status.

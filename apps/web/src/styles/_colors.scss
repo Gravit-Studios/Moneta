@@ -1,0 +1,47 @@
+$white: #FFFFFF;
+$black: #000000;
+
+// Escalas de 11 stops (50 → 950), no mesmo formato usado em color-palette-auto.
+// Base neutra com leve viés esverdeado (ligada ao hue da marca) em vez de cinza puro.
+$gray-50:  #FAF9F6;
+$gray-100: #F2F0EA;
+$gray-200: #E4E1D8;
+$gray-300: #CFCABA;
+$gray-400: #A9A392;
+$gray-500: #82796A;
+$gray-600: #625A4C;
+$gray-700: #4A4338;
+$gray-800: #332E27;
+$gray-900: #201C17;
+$gray-950: #14110D;
+
+// Escala de marca — Moneta Green.
+$brand-50:  #F0F7F4;
+$brand-100: #DCEEE7;
+$brand-200: #B9DDCE;
+$brand-300: #8FC7B1;
+$brand-400: #63AD91;
+$brand-500: #3F9277;
+$brand-600: #2B7860;
+$brand-700: #1F6350;
+$brand-800: #17503F;
+$brand-900: #123F32;
+$brand-950: #0B2820;
+
+// Dourado de conquista/gamificação — uso pontual, nunca como fundo.
+$gold-400: #E0B274;
+$gold-500: #C89144;
+$gold-600: #A97530;
+
+// Cores de status semânticas — independentes do dourado de marca.
+$status-info:    #3B6E99;
+$status-warn:    $gold-500;
+$status-done:    $brand-600;
+$status-pending: $gray-500;
+$status-danger:  #B4432F;
+
+$status-info-dark:    #6FA3CC;
+$status-warn-dark:    $gold-400;
+$status-done-dark:    $brand-400;
+$status-pending-dark: $gray-400;
+$status-danger-dark:  #E08063;

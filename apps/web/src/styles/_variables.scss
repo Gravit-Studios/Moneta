@@ -1,0 +1,26 @@
+// ── Typography ────────────────────────────────────────────────────────────────
+$font-display: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
+$font-sans:    -apple-system, 'Segoe UI', system-ui, sans-serif;
+$font-mono:    ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, monospace;
+
+// ── Spacing ───────────────────────────────────────────────────────────────────
+$sp1:  4px;
+$sp2:  8px;
+$sp3:  12px;
+$sp4:  16px;
+$sp5:  20px;
+$sp6:  24px;
+$sp8:  32px;
+$sp10: 40px;
+$sp12: 48px;
+
+// ── Radius ────────────────────────────────────────────────────────────────────
+$r-sm:  4px;
+$r-md:  6px;
+$r-lg:  8px;
+$r-xl:  10px;
+$r-2xl: 14px;
+
+// ── Transitions ───────────────────────────────────────────────────────────────
+$t-fast: .12s ease;
+$t-base: .18s ease;

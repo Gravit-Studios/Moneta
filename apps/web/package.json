@@ -1,0 +1,12 @@
+{
+  "name": "@moneta/web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "styles:build": "sass src/styles/main.scss dist/styles/main.css",
+    "styles:watch": "sass --watch src/styles/main.scss dist/styles/main.css"
+  },
+  "devDependencies": {
+    "sass": "^1.79.0"
+  }
+}
