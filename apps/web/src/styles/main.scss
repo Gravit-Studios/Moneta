@@ -1,6 +1,7 @@
 @use 'variables' as *;
 @use 'colors' as *;
 @use 'tokens';
+@use 'layout';
 
 // Ponto de entrada único do design system do Moneta.
 // Componentes consomem as variáveis CSS (--color-*, --scale-*) definidas em
