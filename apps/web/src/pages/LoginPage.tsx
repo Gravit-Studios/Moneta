@@ -1,6 +1,6 @@
 import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { api, setAccessToken } from '../lib/api';
+import { api } from '../lib/api';
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -14,8 +14,7 @@ export function LoginPage() {
     setError(null);
     setLoading(true);
     try {
-      const { accessToken } = await api.login(email, password);
-      setAccessToken(accessToken);
+      await api.login(email, password);
       navigate('/');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Não foi possível entrar.');

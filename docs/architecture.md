@@ -1,73 +1,64 @@
-# Moneta — Arquitetura Técnica (Sprint 0)
+# Moneta — Arquitetura Técnica
 
-Detalhamento da arquitetura inicial definida no [Product Vision](./product-vision.md), com decisões de estrutura, padrões e requisitos não-funcionais para o MVP.
+Detalhamento da arquitetura definida no [Product Vision](./product-vision.md), com decisões de estrutura, padrões e requisitos não-funcionais para o MVP.
+
+## 0. Pivô de arquitetura (pós-Sprint 1)
+
+A Sprint 1 implementou uma API própria em NestJS (JWT, Argon2id, Prisma/PostgreSQL). Depois de revisar como o **SweetHub** (outro projeto do estúdio) está estruturado, decidimos migrar o Moneta para o mesmo padrão, por uma razão prática: o SweetHub não precisa de nenhum host de API separado (Railway/Fly.io/VM) — o **Supabase** já é o back-end inteiro (Auth, Postgres, Row Level Security, Edge Functions para o que precisa de segredo), e o front-end é publicado direto no **Cloudflare Workers** como PWA estática. Isso elimina a decisão de "onde hospedar a API" que travou o deploy.
+
+**O que isso substitui:**
+- ~~API NestJS (`apps/api`)~~ → **Supabase Auth** (cadastro, login, recuperação de senha nativos) + **Supabase Postgres** com RLS.
+- ~~Prisma ORM~~ → SQL direto versionado em `supabase/schema.sql`, no mesmo formato do SweetHub.
+- ~~JWT/refresh token próprios~~ → sessão gerenciada pelo `supabase-js` no cliente (a lib já cuida de refresh automático).
+- ~~Cloudflare só como CDN na frente do front-end~~ → **Cloudflare Workers** hospeda o front-end estático (build do Vite) diretamente, com `wrangler.jsonc` + um `worker.js` fino só para headers de segurança — exatamente como o SweetHub.
+
+**O que se mantém:** todo o Design System (Sprint 0), o schema de domínio (entidades do MVP), e os requisitos não-funcionais de LGPD abaixo — só a camada de acesso a dados muda de "API própria" para "RLS no Postgres".
+
+Escopo confirmado com o usuário: **projeto web/PWA, não um app nativo**.
 
 ## 1. Visão geral
-
-Monorepo com front-end SPA (React) consumindo uma API REST/NestJS, banco relacional PostgreSQL via Prisma, cache/filas via Redis + BullMQ, containerizado com Docker e servido atrás de Cloudflare (CDN/WAF).
 
 ```
 moneta/
 ├── apps/
-│   ├── web/          # front-end React + TypeScript
-│   └── api/          # back-end NestJS
-├── packages/
-│   ├── shared-types/ # DTOs e tipos compartilhados front/back
-│   └── config/       # eslint/tsconfig/prettier compartilhados
-├── docker/
-├── docs/
-└── infra/            # IaC, scripts de deploy
+│   └── web/            # front-end React + TypeScript, PWA, deploy via Cloudflare Workers
+├── supabase/
+│   ├── schema.sql       # schema completo + RLS, rodado manualmente no SQL Editor do Supabase
+│   └── functions/       # Edge Functions (Deno), só para o que precisa de segredo
+└── docs/
 ```
 
-Monorepo gerenciado com pnpm workspaces (ou Turborepo, a avaliar no início da Sprint 1) para evitar duplicação de tipos entre front e back.
+Sem back-end próprio para hospedar: o front-end fala direto com o Supabase.
 
 ## 2. Front-end
 
-- **React + TypeScript** — SPA, Vite como bundler.
-- **Tailwind CSS + Shadcn/UI** — design tokens do Design System (task #3) mapeados para as variáveis Tailwind.
-- **React Query** — cache e sincronização de estado do servidor; nenhuma chamada de API direta em componentes.
-- **React Hook Form + Zod** — formulários e validação de schema compartilhada com os DTOs do back-end.
-- **Roteamento**: React Router, com layout autenticado (dashboard) separado do fluxo público (login/cadastro/recuperação de senha).
-- **Estrutura de pastas** por feature (`features/receitas`, `features/despesas`, `features/metas`...), não por tipo de arquivo — reduz acoplamento entre módulos do MVP.
+- **React + TypeScript** — SPA/PWA, Vite como bundler.
+- **PWA**: `manifest.json` + `service-worker.js` (cache de assets, instalável), mesmo padrão do SweetHub.
+- **Tailwind/tokens do Design System** — já implementado em `apps/web/src/styles` (Sprint 0).
+- **`@supabase/supabase-js`** — client único (`src/lib/supabaseClient.ts`) para Auth e queries. A chave usada no front é a `anon`/`publishable` — segura para expor, porque a segurança real vem das políticas de RLS no banco, não da chave.
+- **Roteamento**: React Router, layout autenticado (dashboard) separado do fluxo público (login/cadastro/recuperação de senha).
+- **Estrutura de pastas** por feature, não por tipo de arquivo.
 
-## 3. Back-end
+## 3. Back-end (Supabase)
 
-- **NestJS** organizado em módulos por domínio, espelhando as entidades do MVP: `auth`, `users`, `incomes`, `expenses`, `recurring-bills`, `installments`, `cards`, `categories`, `goals`, `calendar`, `alerts`.
-- **Prisma ORM** sobre **PostgreSQL** — schema único versionado (ver task #4 — Modelagem de banco de dados).
-- **Autenticação**: JWT (access + refresh token), hash de senha com Argon2id, fluxo de recuperação de senha por e-mail com token de uso único e expiração curta.
-- **Redis + BullMQ**: filas para geração de lançamentos recorrentes (contas recorrentes, parcelas futuras), envio de e-mails e cálculo de alertas/insights — processamento assíncrono fora do request-response principal.
-- **Validação**: DTOs com `class-validator`, mesmas regras de negócio refletidas nos schemas Zod do front (via `packages/shared-types` quando possível).
-- **Versionamento de API**: prefixo `/api/v1` desde o início, para não quebrar o front quando a v2/v3 introduzirem novos endpoints.
+- **Auth**: `supabase.auth.signUp` / `signInWithPassword` / `resetPasswordForEmail` — cadastro, login e recuperação de senha nativos, com confirmação de e-mail. Elimina a necessidade de gerenciar hash de senha, JWT ou refresh token no nosso código.
+- **Postgres + RLS**: cada tabela de domínio (`incomes`, `expenses`, `recurring_bills`, `installments`, `cards`, `categories`, `goals`, `alerts`) tem `user_id references auth.users` e uma política de RLS restringindo `select/insert/update/delete` a `auth.uid() = user_id` — isolamento por usuário garantido no banco, não só na aplicação.
+- **Edge Functions** (Deno/TypeScript, em `supabase/functions/`): só para operações que precisam de segredo ou de privilégio elevado — ex. exclusão de conta (precisa da service role, que nunca fica no client) e, futuramente, qualquer integração de pagamento/Open Finance.
+- **Geração de recorrências/parcelas** (contas recorrentes, parcelamentos): via `pg_cron` no próprio Supabase ou Edge Function agendada — substitui o BullMQ/Redis do desenho anterior.
 
 ## 4. Infraestrutura
 
-- **Docker Compose** para ambiente de desenvolvimento local (Postgres, Redis, API, Web).
-- **Cloudflare**: CDN + proteção DDoS/WAF na frente do front-end e da API pública.
-- **Armazenamento de arquivos**: object storage compatível com S3 (ex. Cloudflare R2) para eventuais anexos futuros (ex. comprovantes) — não faz parte do MVP, mas a interface de storage deve ser abstraída desde já para não acoplar o código a um provedor específico.
-- **Backup automático**: dump diário do PostgreSQL com retenção mínima de 30 dias, armazenado fora do provedor principal do banco.
-- **Monitoramento**: logs estruturados (JSON) na API, health-check endpoint (`/health`), e observabilidade básica (ex. Sentry para erros, uptime monitor). Métricas de fila (BullMQ) expostas para acompanhar atrasos no processamento de recorrências.
-- **CI/CD**: pipeline com lint + testes + build obrigatórios antes de qualquer merge na branch principal; deploy automatizado por ambiente (staging/produção).
+- **Cloudflare Workers** (Static Assets, não Pages — a própria Cloudflare recomenda Workers para projetos novos): serve o build do Vite (`dist/`), com `run_worker_first` + `not_found_handling: single-page-application` para as rotas do SPA funcionarem, e um `worker.js` mínimo adicionando headers de segurança (`X-Content-Type-Options`, `X-Frame-Options: DENY`, `Referrer-Policy`, `Permissions-Policy`).
+- **GitHub**: repositório único, sem CI/CD automatizado por enquanto (deploy manual via `wrangler deploy`, mesmo fluxo do SweetHub) — pode evoluir para GitHub Actions mais adiante, mas não é bloqueio para o MVP.
+- **Backup**: backups automáticos do Postgres já inclusos no plano Supabase.
+- **Monitoramento**: logs do Supabase (Auth, Postgres, Edge Functions) via dashboard; sem componente de observabilidade adicional no MVP.
 
 ## 5. Requisitos não-funcionais (herdados da pesquisa de mercado)
 
-A pesquisa de mercado (`market-research.md`) identificou que o principal ponto fraco dos concorrentes é justamente segurança/confiabilidade de dados (sincronização instável, dificuldade de excluir dados, reclamações sobre LGPD). Isso vira requisito de arquitetura desde o MVP, mesmo sem integração bancária ainda:
+A pesquisa de mercado (`market-research.md`) identificou que o principal ponto fraco dos concorrentes é justamente segurança/confiabilidade de dados. Isso continua valendo com Supabase:
 
-- **Minimização de dados**: coletar apenas os campos definidos no MVP; nenhum campo especulativo "para o futuro".
-- **Consentimento e exclusão de dados**: usuário deve poder exportar e excluir todos os seus dados a partir do Perfil — implementar já no MVP (Sprint 1), não esperar a v3/Open Finance.
-- **Criptografia**: dados sensíveis (senha, tokens) nunca em texto plano; TLS obrigatório ponta a ponta.
-- **Isolamento por usuário**: toda query no back-end deve ser escopada por `userId` a nível de aplicação (e idealmente reforçada por constraints/índices no banco) para eliminar risco de vazamento entre contas.
-- **Preparação para Open Finance (v3)**: desenhar o módulo de contas/transações hoje já pensando em uma futura fonte "manual" vs. "importada", para que a integração bancária futura não exija reescrever o modelo de dados do zero.
-
-## 6. Decisões fechadas (revisão de Segurança/Infra — Sprint 1)
-
-- **E-mail transacional**: **Resend** (recuperação de senha, alertas) — conta já existente no estúdio.
-- **Rate-limiting**: `@nestjs/throttler` com storage em Redis (já presente no stack). Limite geral da API + limite mais restrito especificamente em `/auth/login` e `/auth/forgot-password` (proteção contra brute force).
-- **Retenção de logs**: logs estruturados (JSON) com redação obrigatória de senha/token em qualquer campo logado; retenção de 90 dias para logs operacionais.
-
-## 7. Autenticação — pontos corrigidos antes da implementação
-
-A revisão de Segurança/Infra identificou dois pontos críticos no desenho original (JWT stateless) que exigiram ajuste no schema antes de qualquer código:
-
-- **Refresh tokens são stateful**: armazenados hasheados na tabela `RefreshToken`, com rotação a cada uso (uso único) — permite revogação real (logout, troca de senha), o que um JWT puro não permitiria.
-- **Refresh token no cliente**: cookie `HttpOnly` + `Secure` + `SameSite=Strict`, nunca em `localStorage` (mitiga roubo de sessão via XSS).
-- **Token de recuperação de senha**: também armazenado hasheado (`PasswordResetToken`), nunca em texto puro no banco, mesmo padrão da senha.
+- **Minimização de dados**: só os campos definidos no MVP.
+- **Consentimento e exclusão de dados**: exportação e exclusão de conta a partir do Perfil — exclusão via Edge Function com service role (o client nunca tem permissão de apagar `auth.users` diretamente).
+- **Isolamento por usuário garantido por RLS**, não apenas por lógica de aplicação — mais forte que o desenho anterior, porque uma falha de código no front não basta para vazar dados de outro usuário.
+- **Criptografia**: TLS ponta a ponta (Supabase + Cloudflare já operam assim por padrão).
+- **Preparação para Open Finance (v3)**: mesma consideração de antes — desenhar `incomes`/`expenses` já pensando em origem "manual" vs. "importada".

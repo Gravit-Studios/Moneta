@@ -1,0 +1,17 @@
+{
+  // Config do Cloudflare Workers (static assets) — serve o build do Vite
+  // (./dist) direto pelo Workers, sem Cloudflare Pages. "run_worker_first"
+  // garante que toda requisição passa pelo worker.js (headers de
+  // segurança) antes de cair nos assets. "single-page-application" serve o
+  // index.html pra qualquer rota que não bata com um arquivo real, para o
+  // roteamento do React Router funcionar.
+  "name": "moneta",
+  "compatibility_date": "2026-07-19",
+  "main": "worker.js",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": true
+  }
+}
