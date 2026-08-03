@@ -58,8 +58,16 @@ A pesquisa de mercado (`market-research.md`) identificou que o principal ponto f
 - **Isolamento por usuário**: toda query no back-end deve ser escopada por `userId` a nível de aplicação (e idealmente reforçada por constraints/índices no banco) para eliminar risco de vazamento entre contas.
 - **Preparação para Open Finance (v3)**: desenhar o módulo de contas/transações hoje já pensando em uma futura fonte "manual" vs. "importada", para que a integração bancária futura não exija reescrever o modelo de dados do zero.
 
-## 6. Decisões em aberto (para validar com Segurança/Infra antes da Sprint 1)
+## 6. Decisões fechadas (revisão de Segurança/Infra — Sprint 1)
 
-- Provedor definitivo de e-mail transacional (recuperação de senha, alertas).
-- Estratégia de rate-limiting na API pública.
-- Política de retenção de logs contendo dados pessoais (alinhamento LGPD).
+- **E-mail transacional**: **Resend** (recuperação de senha, alertas) — conta já existente no estúdio.
+- **Rate-limiting**: `@nestjs/throttler` com storage em Redis (já presente no stack). Limite geral da API + limite mais restrito especificamente em `/auth/login` e `/auth/forgot-password` (proteção contra brute force).
+- **Retenção de logs**: logs estruturados (JSON) com redação obrigatória de senha/token em qualquer campo logado; retenção de 90 dias para logs operacionais.
+
+## 7. Autenticação — pontos corrigidos antes da implementação
+
+A revisão de Segurança/Infra identificou dois pontos críticos no desenho original (JWT stateless) que exigiram ajuste no schema antes de qualquer código:
+
+- **Refresh tokens são stateful**: armazenados hasheados na tabela `RefreshToken`, com rotação a cada uso (uso único) — permite revogação real (logout, troca de senha), o que um JWT puro não permitiria.
+- **Refresh token no cliente**: cookie `HttpOnly` + `Secure` + `SameSite=Strict`, nunca em `localStorage` (mitiga roubo de sessão via XSS).
+- **Token de recuperação de senha**: também armazenado hasheado (`PasswordResetToken`), nunca em texto puro no banco, mesmo padrão da senha.
