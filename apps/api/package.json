@@ -1,0 +1,16 @@
+{
+  "name": "@moneta/api",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "prisma:format": "prisma format",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:generate": "prisma generate"
+  },
+  "devDependencies": {
+    "prisma": "^5.20.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.20.0"
+  }
+}
