@@ -1,6 +1,15 @@
 export type CategoryType = 'income' | 'expense';
 export type Recurrence = 'none' | 'weekly' | 'monthly' | 'yearly';
 export type PaymentMethod = 'cash' | 'debit' | 'credit_card' | 'pix' | 'bank_transfer' | 'other';
+export type AlertType =
+  | 'bill_due_tomorrow'
+  | 'bill_overdue'
+  | 'card_closing_today'
+  | 'goal_overdue'
+  | 'goal_completed'
+  | 'insufficient_balance'
+  | 'income_expected'
+  | 'installment_completed';
 
 export interface Category {
   id: string;

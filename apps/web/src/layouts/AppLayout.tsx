@@ -6,8 +6,11 @@ const NAV_ITEMS = [
   { to: '/despesas', label: 'Despesas' },
   { to: '/categorias', label: 'Categorias' },
   { to: '/cartoes', label: 'Cartões' },
+  { to: '/contas-recorrentes', label: 'Contas recorrentes' },
+  { to: '/parcelamentos', label: 'Parcelamentos' },
   { to: '/metas', label: 'Metas' },
   { to: '/calendario', label: 'Calendário' },
+  { to: '/alertas', label: 'Alertas' },
   { to: '/perfil', label: 'Perfil' },
 ];
 

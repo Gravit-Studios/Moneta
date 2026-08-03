@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { computeAlerts, DerivedAlert } from '../lib/alerts';
 import { listExpenses } from '../lib/expenses';
 import { currency } from '../lib/format';
 import { listIncomes } from '../lib/incomes';
@@ -12,14 +13,16 @@ function isSameMonth(dateStr: string, ref: Date): boolean {
 export function DashboardPage() {
   const [incomes, setIncomes] = useState<Income[]>([]);
   const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [alerts, setAlerts] = useState<DerivedAlert[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Promise.all([listIncomes(), listExpenses()])
-      .then(([i, e]) => {
+    Promise.all([listIncomes(), listExpenses(), computeAlerts()])
+      .then(([i, e, a]) => {
         setIncomes(i);
         setExpenses(e);
+        setAlerts(a);
       })
       .catch((err) => setError(err instanceof Error ? err.message : 'Erro ao carregar o dashboard.'))
       .finally(() => setLoading(false));
@@ -94,8 +97,21 @@ export function DashboardPage() {
             </div>
           )}
 
+          <h2 className="page-title" style={{ fontSize: 18 }}>Alertas</h2>
+          {alerts.length === 0 ? (
+            <p className="text-muted">Nenhum alerta no momento.</p>
+          ) : (
+            <div className="list-card">
+              {alerts.map((alert, idx) => (
+                <div className="list-row" key={idx}>
+                  <span className="chip chip--warn">{alert.message}</span>
+                </div>
+              ))}
+            </div>
+          )}
+
           <p className="text-muted">
-            Metas e alertas aparecem aqui assim que os módulos de Metas e Gamificação existirem (Sprint 3/4).
+            Metas aparecem aqui assim que o módulo de Metas existir (Sprint 4).
           </p>
         </>
       )}
