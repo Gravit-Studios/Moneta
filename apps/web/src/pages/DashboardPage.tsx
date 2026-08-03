@@ -26,6 +26,7 @@ export function DashboardPage() {
         setExpenses(e);
         setAlerts(a);
         setScore(s);
+        setError(null);
       })
       .catch((err) => setError(err instanceof Error ? err.message : 'Erro ao carregar o dashboard.'))
       .finally(() => setLoading(false));

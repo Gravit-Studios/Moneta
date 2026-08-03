@@ -19,7 +19,10 @@ export function ProfilePage() {
   const [confirmingDelete, setConfirmingDelete] = useState(false);
 
   useEffect(() => {
-    api.me().then(setProfile).catch((err) => setError(err.message));
+    api.me().then((p) => {
+      setProfile(p);
+      setError(null);
+    }).catch((err) => setError(err.message));
     getProfileStats().then(setStats).catch(() => {});
     getUnlockedAchievements().then(setUnlocked).catch(() => {});
   }, []);

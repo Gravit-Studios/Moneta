@@ -29,6 +29,7 @@ export function CalendarPage() {
       .then(([i, e]) => {
         setIncomes(i);
         setExpenses(e);
+        setError(null);
       })
       .catch((err) => setError(err instanceof Error ? err.message : 'Erro ao carregar o calendário.'));
   }, []);

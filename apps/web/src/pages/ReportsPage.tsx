@@ -24,6 +24,7 @@ export function ReportsPage() {
         setIncomes(i);
         setExpenses(e);
         setCategories(c);
+        setError(null);
       })
       .catch((err) => setError(err instanceof Error ? err.message : 'Erro ao carregar relatórios.'))
       .finally(() => setLoading(false));

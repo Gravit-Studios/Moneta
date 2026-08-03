@@ -19,7 +19,10 @@ export function AlertsPage() {
 
   useEffect(() => {
     computeAlerts()
-      .then(setAlerts)
+      .then((a) => {
+        setAlerts(a);
+        setError(null);
+      })
       .catch((err) => setError(err instanceof Error ? err.message : 'Erro ao calcular alertas.'))
       .finally(() => setLoading(false));
   }, []);
