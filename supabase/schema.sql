@@ -207,6 +207,17 @@ create policy "alerts_owner" on public.alerts
 create index if not exists alerts_user_read_idx on public.alerts (user_id, read);
 
 -- =========================================================
+-- Grants — RLS por si só não basta: sem isso, o Postgres nega acesso à
+-- tabela antes mesmo de avaliar as políticas ("permission denied for
+-- table"), porque GRANT e RLS são camadas independentes.
+-- =========================================================
+grant usage on schema public to authenticated;
+grant select, insert, update, delete on
+  public.profiles, public.categories, public.incomes, public.expenses,
+  public.recurring_bills, public.installments, public.cards, public.goals, public.alerts
+  to authenticated;
+
+-- =========================================================
 -- Categorias padrão do MVP (ver docs/product-vision.md)
 -- =========================================================
 insert into public.categories (name, type, is_default) values
