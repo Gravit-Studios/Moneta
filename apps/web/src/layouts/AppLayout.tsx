@@ -4,6 +4,7 @@ const NAV_ITEMS = [
   { to: '/', label: 'Dashboard' },
   { to: '/receitas', label: 'Receitas' },
   { to: '/despesas', label: 'Despesas' },
+  { to: '/categorias', label: 'Categorias' },
   { to: '/cartoes', label: 'Cartões' },
   { to: '/metas', label: 'Metas' },
   { to: '/calendario', label: 'Calendário' },
