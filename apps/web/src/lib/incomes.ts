@@ -1,3 +1,4 @@
+import { recordActivity } from './gamification';
 import { supabase } from './supabaseClient';
 import { Income, Recurrence } from './types';
 
@@ -34,6 +35,8 @@ export async function createIncome(input: IncomeInput): Promise<Income> {
     .select()
     .single();
   if (error) throw new Error(error.message);
+  // Gamificação é melhor-esforço: nunca deve derrubar o cadastro da receita.
+  recordActivity(5).catch(() => {});
   return data;
 }
 

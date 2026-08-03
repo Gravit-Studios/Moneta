@@ -11,6 +11,7 @@ const NAV_ITEMS = [
   { to: '/metas', label: 'Metas' },
   { to: '/calendario', label: 'Calendário' },
   { to: '/alertas', label: 'Alertas' },
+  { to: '/relatorios', label: 'Relatórios' },
   { to: '/perfil', label: 'Perfil' },
 ];
 

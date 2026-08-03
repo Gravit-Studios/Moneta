@@ -1,3 +1,4 @@
+import { checkHundredPaidExpenses, recordActivity } from './gamification';
 import { supabase } from './supabaseClient';
 import { Expense, PaymentMethod } from './types';
 
@@ -37,12 +38,18 @@ export async function createExpense(input: ExpenseInput): Promise<Expense> {
     .select()
     .single();
   if (error) throw new Error(error.message);
+  recordActivity(5).catch(() => {});
   return data;
 }
 
 export async function setExpensePaid(id: string, paid: boolean): Promise<void> {
   const { error } = await supabase.from('expenses').update({ paid }).eq('id', id);
   if (error) throw new Error(error.message);
+
+  if (paid) {
+    recordActivity(10).catch(() => {});
+    checkHundredPaidExpenses().catch(() => {});
+  }
 }
 
 export async function deleteExpense(id: string): Promise<void> {

@@ -1,15 +1,27 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api, Profile } from '../lib/api';
+import {
+  ACHIEVEMENTS,
+  AchievementKey,
+  getProfileStats,
+  getUnlockedAchievements,
+  levelFor,
+  ProfileStats,
+} from '../lib/gamification';
 
 export function ProfilePage() {
   const navigate = useNavigate();
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [stats, setStats] = useState<ProfileStats | null>(null);
+  const [unlocked, setUnlocked] = useState<AchievementKey[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [confirmingDelete, setConfirmingDelete] = useState(false);
 
   useEffect(() => {
     api.me().then(setProfile).catch((err) => setError(err.message));
+    getProfileStats().then(setStats).catch(() => {});
+    getUnlockedAchievements().then(setUnlocked).catch(() => {});
   }, []);
 
   async function handleExport() {
@@ -53,6 +65,39 @@ export function ProfilePage() {
           <p className="text-muted">Carregando…</p>
         )}
       </div>
+
+      {stats && (
+        <div className="profile-section">
+          <h2>Progresso</h2>
+          {(() => {
+            const level = levelFor(stats.xp);
+            const pct = level.nextMinXp
+              ? Math.min(100, ((stats.xp - level.minXp) / (level.nextMinXp - level.minXp)) * 100)
+              : 100;
+            return (
+              <>
+                <p>
+                  <strong>{level.name}</strong> <span className="text-muted">· {stats.xp} XP</span>
+                </p>
+                <div style={{ height: 6, borderRadius: 100, background: 'var(--color-subtle)', margin: '8px 0', overflow: 'hidden' }}>
+                  <div style={{ height: '100%', width: `${pct}%`, background: 'var(--color-emphasis)' }} />
+                </div>
+                <p className="text-muted">
+                  Sequência atual: {stats.current_streak} {stats.current_streak === 1 ? 'dia' : 'dias'} · recorde: {stats.longest_streak}
+                </p>
+              </>
+            );
+          })()}
+          <p className="text-muted" style={{ marginTop: 12, marginBottom: 6 }}>Conquistas</p>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            {(Object.entries(ACHIEVEMENTS) as [AchievementKey, string][]).map(([key, label]) => (
+              <span key={key} className={`chip chip--${unlocked.includes(key) ? 'done' : 'pending'}`}>
+                {label}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="profile-section">
         <h2>Meus dados</h2>

@@ -234,3 +234,72 @@ insert into public.categories (name, type, is_default) values
   ('Salário', 'income', true),
   ('Outros', 'income', true)
 on conflict do nothing;
+
+-- =========================================================
+-- Sprint 4 — Gamificação (XP, sequência, conquistas)
+-- Rode este bloco no SQL Editor se seu banco já tinha o schema anterior
+-- (ele é idempotente: "if not exists"/"add column if not exists").
+-- =========================================================
+alter table public.profiles
+  add column if not exists xp integer not null default 0,
+  add column if not exists current_streak integer not null default 0,
+  add column if not exists longest_streak integer not null default 0,
+  add column if not exists last_active_date date;
+
+create table if not exists public.user_achievements (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users (id) on delete cascade,
+  -- Chaves reconhecidas pelo client (ver ACHIEVEMENTS em
+  -- apps/web/src/lib/gamification.ts): primeira_meta_concluida,
+  -- cem_contas_pagas, divida_quitada.
+  achievement_key text not null,
+  unlocked_at timestamptz not null default now(),
+  unique (user_id, achievement_key)
+);
+
+alter table public.user_achievements enable row level security;
+create policy "user_achievements_owner" on public.user_achievements
+  for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
+grant select, insert, update, delete on public.user_achievements to authenticated;
+
+-- Registra uma ação do usuário (XP + sequência de dias consecutivos) e,
+-- opcionalmente, desbloqueia uma conquista. security invoker (não definer):
+-- roda com o privilégio de quem chama, então só mexe na própria linha —
+-- não precisa de checagem extra de auth.uid() além do "where id = auth.uid()".
+create or replace function public.record_activity(xp_gain integer default 5, achievement text default null)
+returns void
+language plpgsql
+security invoker
+as $$
+declare
+  today date := current_date;
+  last_date date;
+  streak int;
+begin
+  select last_active_date, current_streak into last_date, streak
+  from public.profiles where id = auth.uid();
+
+  if last_date is null or last_date < today - 1 then
+    streak := 1;
+  elsif last_date = today - 1 then
+    streak := streak + 1;
+  end if;
+  -- se last_date = today, streak não muda (já contabilizado hoje)
+
+  update public.profiles
+    set xp = xp + xp_gain,
+        current_streak = streak,
+        longest_streak = greatest(longest_streak, streak),
+        last_active_date = today
+    where id = auth.uid();
+
+  if achievement is not null then
+    insert into public.user_achievements (user_id, achievement_key)
+    values (auth.uid(), achievement)
+    on conflict (user_id, achievement_key) do nothing;
+  end if;
+end;
+$$;
+
+grant execute on function public.record_activity(integer, text) to authenticated;

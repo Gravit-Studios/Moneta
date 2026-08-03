@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { computeAlerts, DerivedAlert } from '../lib/alerts';
 import { listExpenses } from '../lib/expenses';
+import { computeFinancialScore, FinancialScoreBreakdown } from '../lib/financialScore';
 import { currency } from '../lib/format';
 import { listIncomes } from '../lib/incomes';
 import { Expense, Income } from '../lib/types';
@@ -14,15 +15,17 @@ export function DashboardPage() {
   const [incomes, setIncomes] = useState<Income[]>([]);
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [alerts, setAlerts] = useState<DerivedAlert[]>([]);
+  const [score, setScore] = useState<FinancialScoreBreakdown | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Promise.all([listIncomes(), listExpenses(), computeAlerts()])
-      .then(([i, e, a]) => {
+    Promise.all([listIncomes(), listExpenses(), computeAlerts(), computeFinancialScore()])
+      .then(([i, e, a, s]) => {
         setIncomes(i);
         setExpenses(e);
         setAlerts(a);
+        setScore(s);
       })
       .catch((err) => setError(err instanceof Error ? err.message : 'Erro ao carregar o dashboard.'))
       .finally(() => setLoading(false));
@@ -94,6 +97,16 @@ export function DashboardPage() {
                   </div>
                 );
               })}
+            </div>
+          )}
+
+          {score && (
+            <div className="widget" style={{ maxWidth: 260, marginBottom: 24 }}>
+              <div className="widget__label">Saúde financeira</div>
+              <div className="widget__value">{score.score}/100</div>
+              <p className="text-muted" style={{ marginTop: 8 }}>
+                pontualidade {score.pontualidade} · reserva {score.reserva} · parcelamentos {score.comprometimento} · economia {score.economia}
+              </p>
             </div>
           )}
 

@@ -2,6 +2,7 @@ import { FormEvent, useEffect, useState } from 'react';
 import { Card, listCards } from '../lib/cards';
 import { listCategories } from '../lib/categories';
 import { currency, shortDate } from '../lib/format';
+import { getUnlockedAchievements, recordActivity } from '../lib/gamification';
 import {
   createInstallment,
   deleteInstallment,
@@ -34,11 +35,23 @@ export function InstallmentsPage() {
         listCards(),
         listCategories('expense'),
       ]);
-      setProgress(await Promise.all(installments.map(installmentProgress)));
+      const progressList = await Promise.all(installments.map(installmentProgress));
+      setProgress(progressList);
       setCards(cardList);
       setCategories(categoryList);
       if (!cardId && cardList.length > 0) setCardId(cardList[0].id);
       if (!categoryId && categoryList.length > 0) setCategoryId(categoryList[0].id);
+
+      // "Dívida quitada": todas as parcelas de algum parcelamento pagas.
+      // Checa a lista de conquistas já desbloqueadas antes de premiar de
+      // novo, pra não farmar XP toda vez que a página recarrega.
+      const clearedSome = progressList.some((p) => p.paidCount > 0 && p.remainingCount === 0);
+      if (clearedSome) {
+        const unlocked = await getUnlockedAchievements();
+        if (!unlocked.includes('divida_quitada')) {
+          await recordActivity(40, 'divida_quitada').catch(() => {});
+        }
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao carregar parcelamentos.');
     } finally {
