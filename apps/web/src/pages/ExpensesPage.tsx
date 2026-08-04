@@ -27,6 +27,7 @@ export function ExpensesPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [showForm, setShowForm] = useState(false);
 
   const [name, setName] = useState('');
   const [value, setValue] = useState('');
@@ -61,6 +62,7 @@ export function ExpensesPage() {
       setName('');
       setValue('');
       setShowSuccess(true);
+      setShowForm(false);
       await refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Não foi possível criar a despesa.');
@@ -91,9 +93,15 @@ export function ExpensesPage() {
 
   return (
     <div>
-      <h1 className="page-title">Despesas</h1>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: showForm ? 16 : 24 }}>
+        <h1 className="page-title" style={{ margin: 0 }}>Despesas</h1>
+        <button className="btn btn--ghost" onClick={() => setShowForm((s) => !s)}>
+          {showForm ? 'Cancelar' : '+ Nova despesa'}
+        </button>
+      </div>
 
-      <form className="profile-section" onSubmit={handleSubmit}>
+      {showForm && (
+      <form className="profile-section modal-pop" onSubmit={handleSubmit}>
         <h2>Nova despesa</h2>
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
           <div className="form-field" style={{ flex: 2, minWidth: 160 }}>
@@ -138,6 +146,7 @@ export function ExpensesPage() {
         </div>
         {error && <p style={{ color: 'var(--color-status-danger)', marginTop: 8 }}>{error}</p>}
       </form>
+      )}
 
       {loading ? (
         <p className="text-muted">Carregando…</p>
