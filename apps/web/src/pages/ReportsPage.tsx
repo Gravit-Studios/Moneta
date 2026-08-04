@@ -88,10 +88,10 @@ export function ReportsPage() {
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 3, marginTop: 4 }}>
                   <div style={{ height: 8, borderRadius: 4, background: 'var(--color-subtle)', overflow: 'hidden' }}>
-                    <div style={{ height: '100%', width: `${(m.receitas / maxValue) * 100}%`, background: 'var(--color-status-done)' }} />
+                    <div className="bar-fill" style={{ height: '100%', width: `${(m.receitas / maxValue) * 100}%`, background: 'var(--color-status-done)' }} />
                   </div>
                   <div style={{ height: 8, borderRadius: 4, background: 'var(--color-subtle)', overflow: 'hidden' }}>
-                    <div style={{ height: '100%', width: `${(m.despesas / maxValue) * 100}%`, background: 'var(--color-status-danger)' }} />
+                    <div className="bar-fill" style={{ height: '100%', width: `${(m.despesas / maxValue) * 100}%`, background: 'var(--color-status-danger)' }} />
                   </div>
                 </div>
               </div>

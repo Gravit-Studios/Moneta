@@ -59,7 +59,7 @@ export function QuickAddExpense({ onClose, onCreated }: QuickAddExpenseProps) {
   return (
     <div className="success-overlay" style={{ backdropFilter: 'blur(3px)' }} onClick={onClose}>
       <form
-        className="auth-card"
+        className="auth-card modal-pop"
         style={{ maxWidth: 340, textAlign: 'left' }}
         onClick={(e) => e.stopPropagation()}
         onSubmit={handleSubmit}

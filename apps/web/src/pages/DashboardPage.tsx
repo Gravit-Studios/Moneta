@@ -93,6 +93,7 @@ export function DashboardPage() {
               </div>
               <div style={{ height: 6, borderRadius: 100, background: 'var(--color-subtle)', marginTop: 8, overflow: 'hidden' }}>
                 <div
+                  className="bar-fill"
                   style={{
                     height: '100%',
                     width: `${Math.min(100, (mainGoal.current_value / mainGoal.target_value) * 100)}%`,

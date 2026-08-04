@@ -104,7 +104,7 @@ export function GoalsPage() {
                   {currency(goal.current_value)} de {currency(goal.target_value)}
                 </div>
                 <div style={{ height: 6, borderRadius: 100, background: 'var(--color-subtle)', marginTop: 8, overflow: 'hidden' }}>
-                  <div style={{ height: '100%', width: `${pct}%`, background: done ? 'var(--color-status-done)' : 'var(--color-emphasis)' }} />
+                  <div className="bar-fill" style={{ height: '100%', width: `${pct}%`, background: done ? 'var(--color-status-done)' : 'var(--color-emphasis)' }} />
                 </div>
                 <p className="text-muted" style={{ marginTop: 8 }}>
                   {done ? 'concluída' : `previsão: ${shortDate(goal.target_date)}`}

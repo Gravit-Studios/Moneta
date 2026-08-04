@@ -125,7 +125,7 @@ export function CardsPage() {
                 <div className="widget" style={{ marginTop: 8 }}>
                   <div className="widget__label">Limite</div>
                   <div style={{ height: 6, borderRadius: 100, background: 'var(--color-subtle)', marginTop: 6, overflow: 'hidden' }}>
-                    <div style={{ height: '100%', width: `${pct}%`, background: 'var(--color-status-warn)' }} />
+                    <div className="bar-fill" style={{ height: '100%', width: `${pct}%`, background: 'var(--color-status-warn)' }} />
                   </div>
                   <p className="text-muted" style={{ marginTop: 8 }}>
                     disponível: {currency(available)} de {currency(card.limit_amount)}

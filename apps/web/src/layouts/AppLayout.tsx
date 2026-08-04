@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { MobileTabBar } from '../components/MobileTabBar';
 import { NoraMark } from '../components/NoraMark';
 
@@ -18,6 +18,7 @@ const NAV_ITEMS = [
 ];
 
 export function AppLayout() {
+  const location = useLocation();
   return (
     <div className="app-shell">
       <nav className="sidebar">
@@ -37,7 +38,9 @@ export function AppLayout() {
         ))}
       </nav>
       <main className="app-content">
-        <Outlet />
+        <div key={location.pathname} className="page-transition">
+          <Outlet />
+        </div>
       </main>
       <MobileTabBar />
     </div>

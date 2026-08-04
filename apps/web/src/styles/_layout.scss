@@ -36,9 +36,51 @@
   color: var(--color-default);
   text-decoration: none;
   font-size: 14.5px;
+  transition: background $t-fast, color $t-fast, transform $t-fast;
 
   &:hover { background: var(--color-subtle); }
   &.is-active { background: var(--color-emphasis); color: var(--color-on-primary); }
+  &:active { transform: scale(.97); }
+}
+
+// Transição entre rotas — fade + leve deslocamento vertical, só o bastante
+// pra sinalizar "algo mudou" sem virar uma animação decorativa.
+.page-transition {
+  animation: page-fade-in $t-slow;
+}
+
+@keyframes page-fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-transition { animation: none; }
+}
+
+// Entrada de modal — escala sutil + fade, reforça "isso apareceu por cima",
+// diferente do overlay de fundo que só some com fade.
+.modal-pop {
+  animation: modal-pop-in $t-base;
+}
+
+@keyframes modal-pop-in {
+  from { opacity: 0; transform: scale(.96) translateY(4px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal-pop { animation: none; }
+}
+
+// Barra de progresso (metas, limite de cartão) — anima a largura quando o
+// valor muda, não só quando a página carrega.
+.bar-fill {
+  transition: width $t-slow;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar-fill { transition: none; }
 }
 
 .app-content {
@@ -85,8 +127,11 @@
     text-decoration: none;
     font-size: 10.5px;
 
+    transition: color $t-fast, transform $t-fast;
+
     .tabbar-item__icon { font-size: 19px; line-height: 1; }
     &.is-active { color: var(--color-emphasis); }
+    &:active { transform: scale(.94); }
   }
 }
 
@@ -402,6 +447,9 @@
   box-shadow: 0 4px 14px color-mix(in srgb, var(--color-emphasis) 45%, transparent);
   cursor: pointer;
   z-index: 20;
+  transition: transform $t-fast, box-shadow $t-fast;
+
+  &:active { transform: scale(.92); }
 }
 
 @media (max-width: 760px) {
@@ -415,12 +463,14 @@
   padding: $sp2 + 3 $sp5;
   border: 1px solid transparent;
   cursor: pointer;
+  transition: transform $t-fast, background $t-fast, border-color $t-fast, opacity $t-fast;
 
   &--primary { background: var(--color-emphasis); color: var(--color-on-primary); }
   &--ghost { background: transparent; border-color: var(--color-subtle); color: var(--color-default); }
   &--danger { background: transparent; border-color: var(--color-status-danger); color: var(--color-status-danger); }
 
   &:focus-visible { outline: 2px solid var(--color-status-warn); outline-offset: 2px; }
+  &:active { transform: scale(.96); }
 }
 
 // Estilo base de todo input/select do app — global (não só dentro de

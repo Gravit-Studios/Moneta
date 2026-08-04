@@ -84,7 +84,7 @@ export function ProfilePage() {
                   <strong>{level.name}</strong> <span className="text-muted">· {stats.xp} XP</span>
                 </p>
                 <div style={{ height: 6, borderRadius: 100, background: 'var(--color-subtle)', margin: '8px 0', overflow: 'hidden' }}>
-                  <div style={{ height: '100%', width: `${pct}%`, background: 'var(--color-emphasis)' }} />
+                  <div className="bar-fill" style={{ height: '100%', width: `${pct}%`, background: 'var(--color-emphasis)' }} />
                 </div>
                 <p className="text-muted">
                   Sequência atual: {stats.current_streak} {stats.current_streak === 1 ? 'dia' : 'dias'} · recorde: {stats.longest_streak}

@@ -44,8 +44,10 @@ export function OnboardingPage() {
           <NoraMark size={56} />
         </div>
 
-        <h1 className="page-title" style={{ fontSize: 22 }}>{STEPS[step].title}</h1>
-        <p className="text-muted" style={{ marginTop: 8, marginBottom: 24 }}>{STEPS[step].text}</p>
+        <div key={step} className="page-transition">
+          <h1 className="page-title" style={{ fontSize: 22 }}>{STEPS[step].title}</h1>
+          <p className="text-muted" style={{ marginTop: 8, marginBottom: 24 }}>{STEPS[step].text}</p>
+        </div>
 
         <div style={{ display: 'flex', justifyContent: 'center', gap: 6, marginBottom: 24 }}>
           {STEPS.map((_, i) => (
