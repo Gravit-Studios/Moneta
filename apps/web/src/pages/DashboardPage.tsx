@@ -1,31 +1,39 @@
 import { useEffect, useMemo, useState } from 'react';
-import { computeAlerts, DerivedAlert } from '../lib/alerts';
+import { NoraMessage } from '../components/NoraMessage';
 import { listExpenses } from '../lib/expenses';
-import { computeFinancialScore, FinancialScoreBreakdown } from '../lib/financialScore';
 import { currency } from '../lib/format';
+import { listGoals } from '../lib/goals';
 import { listIncomes } from '../lib/incomes';
-import { Expense, Income } from '../lib/types';
+import { noraMessage } from '../lib/noraMessage';
+import { Expense, Goal, Income } from '../lib/types';
 
 function isSameMonth(dateStr: string, ref: Date): boolean {
   const d = new Date(`${dateStr}T00:00:00`);
   return d.getFullYear() === ref.getFullYear() && d.getMonth() === ref.getMonth();
 }
 
+// Estrutura definida no briefing de marca (docs/nora-brand-brief.md,
+// seção Interface): saldo, próximas contas, meta principal, resumo do
+// mês, mensagem da Nora — poucos elementos, não um grid denso de widgets.
 export function DashboardPage() {
-  const [incomes, setIncomes] = useState<Income[]>([]);
+  const [message, setMessage] = useState<string | null>(null);
   const [expenses, setExpenses] = useState<Expense[]>([]);
-  const [alerts, setAlerts] = useState<DerivedAlert[]>([]);
-  const [score, setScore] = useState<FinancialScoreBreakdown | null>(null);
+  const [incomes, setIncomes] = useState<Income[]>([]);
+  const [mainGoal, setMainGoal] = useState<Goal | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Promise.all([listIncomes(), listExpenses(), computeAlerts(), computeFinancialScore()])
-      .then(([i, e, a, s]) => {
-        setIncomes(i);
+    Promise.all([noraMessage(), listExpenses(), listIncomes(), listGoals()])
+      .then(([m, e, i, goals]) => {
+        setMessage(m);
         setExpenses(e);
-        setAlerts(a);
-        setScore(s);
+        setIncomes(i);
+        // "Meta principal" — a mais próxima da data prevista, entre as
+        // ainda não concluídas.
+        const open = goals.filter((g) => g.current_value < g.target_value);
+        open.sort((a, b) => a.target_date.localeCompare(b.target_date));
+        setMainGoal(open[0] ?? null);
         setError(null);
       })
       .catch((err) => setError(err instanceof Error ? err.message : 'Erro ao carregar o dashboard.'))
@@ -36,100 +44,74 @@ export function DashboardPage() {
 
   const receitasMes = incomes.filter((i) => isSameMonth(i.date, now)).reduce((sum, i) => sum + i.value, 0);
   const despesasMes = expenses.filter((e) => isSameMonth(e.due_date, now)).reduce((sum, e) => sum + e.value, 0);
-  const saldoAtual = receitasMes - despesasMes;
-  const contasPendentes = expenses.filter((e) => !e.paid && new Date(e.due_date) >= new Date(now.toDateString())).length;
-  const contasVencidas = expenses.filter((e) => !e.paid && new Date(e.due_date) < new Date(now.toDateString())).length;
+  const saldo = receitasMes - despesasMes;
 
-  const proximosVencimentos = expenses
+  const proximasContas = expenses
     .filter((e) => !e.paid)
     .sort((a, b) => a.due_date.localeCompare(b.due_date))
-    .slice(0, 5);
-
-  function statusOf(expense: Expense) {
-    if (expense.paid) return { label: 'paga', chip: 'done' as const };
-    const overdue = new Date(expense.due_date) < new Date(now.toDateString());
-    return overdue ? { label: 'vencida', chip: 'danger' as const } : { label: 'a vencer', chip: 'warn' as const };
-  }
+    .slice(0, 3);
 
   return (
     <div>
-      <h1 className="page-title">Onde estou?</h1>
-
       {error && <p style={{ color: 'var(--color-status-danger)' }}>{error}</p>}
       {loading ? (
         <p className="text-muted">Carregando…</p>
       ) : (
         <>
+          {message && <NoraMessage message={message} />}
+
           <div className="hero-card">
-            <div className="widget__label">Saldo do mês</div>
-            <div className={`hero-number${saldoAtual >= 0 ? ' hero-number--highlight' : ''}`}>
-              {currency(saldoAtual)}
-            </div>
+            <div className="widget__label">Saldo</div>
+            <div className="hero-number">{currency(saldo)}</div>
           </div>
 
-          <div className="widget-grid">
-            <div className="widget">
-              <div className="widget__label">Receitas do mês</div>
-              <div className="widget__value">{currency(receitasMes)}</div>
-            </div>
-            <div className="widget">
-              <div className="widget__label">Despesas do mês</div>
-              <div className="widget__value">{currency(despesasMes)}</div>
-            </div>
-            <div className="widget">
-              <div className="widget__label">Contas pendentes</div>
-              <div className="widget__value">{contasPendentes}</div>
-            </div>
-            <div className="widget">
-              <div className="widget__label">Contas vencidas</div>
-              <div className="widget__value">{contasVencidas}</div>
-            </div>
-          </div>
-
-          <h2 className="page-title" style={{ fontSize: 18 }}>Próximos vencimentos</h2>
-          {proximosVencimentos.length === 0 ? (
+          <h2 className="page-title" style={{ fontSize: 17, marginTop: 32 }}>Próximas contas</h2>
+          {proximasContas.length === 0 ? (
             <p className="text-muted">Nenhuma conta em aberto.</p>
           ) : (
             <div className="list-card">
-              {proximosVencimentos.map((expense) => {
-                const status = statusOf(expense);
-                return (
-                  <div className="list-row" key={expense.id}>
-                    <span>{expense.name}</span>
-                    <span className={`chip chip--${status.chip}`}>{status.label}</span>
-                    <span className="list-row__value">{currency(expense.value)}</span>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-
-          {score && (
-            <div className="widget" style={{ maxWidth: 260, marginBottom: 24 }}>
-              <div className="widget__label">Saúde financeira</div>
-              <div className="widget__value">{score.score}/100</div>
-              <p className="text-muted" style={{ marginTop: 8 }}>
-                pontualidade {score.pontualidade} · reserva {score.reserva} · parcelamentos {score.comprometimento} · economia {score.economia}
-              </p>
-            </div>
-          )}
-
-          <h2 className="page-title" style={{ fontSize: 18 }}>Alertas</h2>
-          {alerts.length === 0 ? (
-            <p className="text-muted">Nenhum alerta no momento.</p>
-          ) : (
-            <div className="list-card">
-              {alerts.map((alert, idx) => (
-                <div className="list-row" key={idx}>
-                  <span className="chip chip--warn">{alert.message}</span>
+              {proximasContas.map((expense) => (
+                <div className="list-row" key={expense.id}>
+                  <span>{expense.name}</span>
+                  <span className="text-muted">{expense.due_date.split('-').reverse().join('/')}</span>
+                  <span className="list-row__value">{currency(expense.value)}</span>
                 </div>
               ))}
             </div>
           )}
 
-          <p className="text-muted">
-            Metas aparecem aqui assim que o módulo de Metas existir (Sprint 4).
-          </p>
+          <h2 className="page-title" style={{ fontSize: 17, marginTop: 32 }}>Meta principal</h2>
+          {mainGoal ? (
+            <div className="widget" style={{ maxWidth: 320 }}>
+              <div className="widget__label">{mainGoal.name}</div>
+              <div className="widget__value" style={{ fontSize: 18 }}>
+                {currency(mainGoal.current_value)} de {currency(mainGoal.target_value)}
+              </div>
+              <div style={{ height: 6, borderRadius: 100, background: 'var(--color-subtle)', marginTop: 8, overflow: 'hidden' }}>
+                <div
+                  style={{
+                    height: '100%',
+                    width: `${Math.min(100, (mainGoal.current_value / mainGoal.target_value) * 100)}%`,
+                    background: 'var(--color-emphasis)',
+                  }}
+                />
+              </div>
+            </div>
+          ) : (
+            <p className="text-muted">Nenhuma meta em andamento.</p>
+          )}
+
+          <h2 className="page-title" style={{ fontSize: 17, marginTop: 32 }}>Resumo do mês</h2>
+          <div className="widget-grid" style={{ maxWidth: 420 }}>
+            <div className="widget">
+              <div className="widget__label">Receitas</div>
+              <div className="widget__value">{currency(receitasMes)}</div>
+            </div>
+            <div className="widget">
+              <div className="widget__label">Despesas</div>
+              <div className="widget__value">{currency(despesasMes)}</div>
+            </div>
+          </div>
         </>
       )}
     </div>
