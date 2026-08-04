@@ -188,6 +188,79 @@
   &--danger { background: color-mix(in srgb, var(--color-status-danger) 16%, var(--color-surface)); color: var(--color-status-danger); }
 }
 
+.cat-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 3px $sp2;
+  border-radius: 100px;
+  background: color-mix(in srgb, var(--cat-color) 16%, var(--color-surface));
+  color: var(--cat-color);
+
+  &::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--cat-color); flex: none; }
+}
+
+.cat-dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--cat-color);
+  flex: none;
+}
+
+// Cartão visual — apenas os últimos 4 dígitos são reais (não guardamos
+// número de cartão nenhum, ver supabase/schema.sql); o resto é decorativo,
+// derivado do id só pra parecer um cartão de verdade em vez de um card de
+// texto genérico.
+.credit-card {
+  position: relative;
+  border-radius: $r-2xl;
+  padding: $sp5 $sp5 $sp6;
+  min-height: 150px;
+  background: linear-gradient(135deg, var(--color-strong), var(--color-emphasis) 65%, var(--color-highlight));
+  color: var(--color-on-primary);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.credit-card__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.credit-card__name {
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+.credit-card__chip {
+  width: 30px;
+  height: 22px;
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--color-on-primary) 55%, transparent);
+}
+
+.credit-card__number {
+  font-family: $font-mono;
+  font-size: 16px;
+  letter-spacing: 0.12em;
+  margin: $sp4 0 $sp2;
+}
+
+.credit-card__bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-size: 11.5px;
+  opacity: 0.85;
+}
+
 .btn {
   font-size: 14.5px;
   font-weight: 600;

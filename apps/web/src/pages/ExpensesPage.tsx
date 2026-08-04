@@ -1,4 +1,5 @@
-import { FormEvent, useEffect, useState } from 'react';
+import { CSSProperties, FormEvent, useEffect, useState } from 'react';
+import { categoryColorVar } from '../lib/categoryColor';
 import { listCategories } from '../lib/categories';
 import { createExpense, deleteExpense, listExpenses, setExpensePaid } from '../lib/expenses';
 import { currency, shortDate } from '../lib/format';
@@ -148,7 +149,14 @@ export function ExpensesPage() {
             return (
               <div className="list-row" key={expense.id}>
                 <span>
-                  {expense.name} <span className="text-muted">· {categoryName(expense.category_id)} · {shortDate(expense.due_date)}</span>
+                  {expense.name}{' '}
+                  <span
+                    className="cat-tag"
+                    style={{ '--cat-color': categoryColorVar(expense.category_id) } as CSSProperties}
+                  >
+                    {categoryName(expense.category_id)}
+                  </span>{' '}
+                  <span className="text-muted">· {shortDate(expense.due_date)}</span>
                 </span>
                 <button className={`chip chip--${status.chip}`} onClick={() => handleTogglePaid(expense)} style={{ border: 'none', cursor: 'pointer' }}>
                   {status.label}

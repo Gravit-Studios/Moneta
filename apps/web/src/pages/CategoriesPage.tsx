@@ -1,4 +1,5 @@
-import { FormEvent, useEffect, useState } from 'react';
+import { CSSProperties, FormEvent, useEffect, useState } from 'react';
+import { categoryColorVar } from '../lib/categoryColor';
 import { createCategory, deleteCategory, listCategories } from '../lib/categories';
 import { Category, CategoryType } from '../lib/types';
 
@@ -84,7 +85,10 @@ export function CategoriesPage() {
           <div className="list-card">
             {expenseCategories.map((cat) => (
               <div className="list-row" key={cat.id}>
-                <span>{cat.name}{cat.is_default && <span className="text-muted"> · padrão</span>}</span>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+                  <span className="cat-dot" style={{ '--cat-color': categoryColorVar(cat.id) } as CSSProperties} />
+                  {cat.name}{cat.is_default && <span className="text-muted"> · padrão</span>}
+                </span>
                 {!cat.is_default && (
                   <button className="btn btn--ghost" onClick={() => handleDelete(cat.id)}>Excluir</button>
                 )}
@@ -96,7 +100,10 @@ export function CategoriesPage() {
           <div className="list-card">
             {incomeCategories.map((cat) => (
               <div className="list-row" key={cat.id}>
-                <span>{cat.name}{cat.is_default && <span className="text-muted"> · padrão</span>}</span>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+                  <span className="cat-dot" style={{ '--cat-color': categoryColorVar(cat.id) } as CSSProperties} />
+                  {cat.name}{cat.is_default && <span className="text-muted"> · padrão</span>}
+                </span>
                 {!cat.is_default && (
                   <button className="btn btn--ghost" onClick={() => handleDelete(cat.id)}>Excluir</button>
                 )}

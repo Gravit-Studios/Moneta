@@ -42,6 +42,19 @@ $highlight-500: #8FD13F;
 $highlight-600: #6FAE2A;
 $on-highlight:  #142911;
 
+// Paleta de categorias — 8 matizes claramente distintos entre si (não
+// variações do mesmo verde da marca), pensada pra diferenciação em tags e
+// gráficos de categoria (ver lib/categoryColor.ts). Cor de marca e cor de
+// categoria são sistemas separados de propósito.
+$cat-1: #2B7860; // verde (mesmo tom do brand-600, serve de âncora)
+$cat-2: #3B6E99; // azul
+$cat-3: #C89144; // âmbar/dourado
+$cat-4: #B4432F; // terracota
+$cat-5: #7A5CC2; // roxo
+$cat-6: #2597A6; // teal
+$cat-7: #C25C8A; // rosa
+$cat-8: #6E6152; // oliva/neutro
+
 // Cores de status semânticas — independentes do dourado de marca.
 $status-info:    #3B6E99;
 $status-warn:    $gold-500;

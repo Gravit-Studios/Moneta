@@ -23,6 +23,17 @@
   --color-status-pending: #{$status-pending};
   --color-status-danger:  #{$status-danger};
 
+  // Paleta de categorias — mesma em light/dark (já são cores de meio-tom
+  // saturadas o bastante pra funcionar nos dois fundos).
+  --color-cat-1: #{$cat-1};
+  --color-cat-2: #{$cat-2};
+  --color-cat-3: #{$cat-3};
+  --color-cat-4: #{$cat-4};
+  --color-cat-5: #{$cat-5};
+  --color-cat-6: #{$cat-6};
+  --color-cat-7: #{$cat-7};
+  --color-cat-8: #{$cat-8};
+
   // Scale — gray (light reference)
   --scale-gray-50:  #{$gray-50};
   --scale-gray-100: #{$gray-100};

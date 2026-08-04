@@ -2,6 +2,15 @@ import { FormEvent, useEffect, useState } from 'react';
 import { Card, cardUsage, createCard, deleteCard, listCards } from '../lib/cards';
 import { currency } from '../lib/format';
 
+// Decorativo — nunca guardamos número de cartão de verdade (ver
+// supabase/schema.sql). Só dá um toque visual de "cartão de verdade" em
+// vez de um card de texto genérico.
+function decorativeDigits(cardId: string): string {
+  let hash = 0;
+  for (let i = 0; i < cardId.length; i++) hash = (hash * 31 + cardId.charCodeAt(i)) >>> 0;
+  return String(hash % 10000).padStart(4, '0');
+}
+
 export function CardsPage() {
   const [cards, setCards] = useState<Card[]>([]);
   const [usage, setUsage] = useState<Record<string, number>>({});
@@ -97,16 +106,32 @@ export function CardsPage() {
             const available = card.limit_amount - used;
             const pct = card.limit_amount > 0 ? Math.min(100, (used / card.limit_amount) * 100) : 0;
             return (
-              <div key={card.id} className="widget">
-                <div className="widget__label">{card.name} · fecha dia {card.closing_day}</div>
-                <div className="widget__value" style={{ fontSize: 18 }}>
-                  {currency(used)} / {currency(card.limit_amount)}
+              <div key={card.id}>
+                <div className="credit-card">
+                  <div className="credit-card__top">
+                    <span className="credit-card__name">{card.name}</span>
+                    <span className="credit-card__chip" />
+                  </div>
+                  <div>
+                    <div className="credit-card__number">•••• •••• •••• {decorativeDigits(card.id)}</div>
+                    <div className="hero-number" style={{ fontSize: 24, color: 'inherit' }}>{currency(used)}</div>
+                  </div>
+                  <div className="credit-card__bottom">
+                    <span>fecha dia {card.closing_day}</span>
+                    <span>vence dia {card.due_day}</span>
+                  </div>
                 </div>
-                <div style={{ height: 6, borderRadius: 100, background: 'var(--color-subtle)', marginTop: 8, overflow: 'hidden' }}>
-                  <div style={{ height: '100%', width: `${pct}%`, background: 'var(--color-status-warn)' }} />
+
+                <div className="widget" style={{ marginTop: 8 }}>
+                  <div className="widget__label">Limite</div>
+                  <div style={{ height: 6, borderRadius: 100, background: 'var(--color-subtle)', marginTop: 6, overflow: 'hidden' }}>
+                    <div style={{ height: '100%', width: `${pct}%`, background: 'var(--color-status-warn)' }} />
+                  </div>
+                  <p className="text-muted" style={{ marginTop: 8 }}>
+                    disponível: {currency(available)} de {currency(card.limit_amount)}
+                  </p>
+                  <button className="btn btn--ghost" onClick={() => handleDelete(card.id)} style={{ marginTop: 8 }}>Excluir</button>
                 </div>
-                <p className="text-muted" style={{ marginTop: 8 }}>disponível: {currency(available)} · vence dia {card.due_day}</p>
-                <button className="btn btn--ghost" onClick={() => handleDelete(card.id)} style={{ marginTop: 8 }}>Excluir</button>
               </div>
             );
           })}

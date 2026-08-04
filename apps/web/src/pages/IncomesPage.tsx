@@ -1,4 +1,5 @@
-import { FormEvent, useEffect, useState } from 'react';
+import { CSSProperties, FormEvent, useEffect, useState } from 'react';
+import { categoryColorVar } from '../lib/categoryColor';
 import { listCategories } from '../lib/categories';
 import { currency, shortDate } from '../lib/format';
 import { createIncome, deleteIncome, listIncomes } from '../lib/incomes';
@@ -129,7 +130,14 @@ export function IncomesPage() {
           {incomes.map((income) => (
             <div className="list-row" key={income.id}>
               <span>
-                {income.name} <span className="text-muted">· {categoryName(income.category_id)} · {shortDate(income.date)}</span>
+                {income.name}{' '}
+                <span
+                  className="cat-tag"
+                  style={{ '--cat-color': categoryColorVar(income.category_id) } as CSSProperties}
+                >
+                  {categoryName(income.category_id)}
+                </span>{' '}
+                <span className="text-muted">· {shortDate(income.date)}</span>
               </span>
               <span className="list-row__value">{currency(income.value)}</span>
               <button className="btn btn--ghost" onClick={() => handleDelete(income.id)}>Excluir</button>
