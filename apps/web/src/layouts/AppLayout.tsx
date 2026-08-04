@@ -1,4 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom';
+import { MobileTabBar } from '../components/MobileTabBar';
 
 const NAV_ITEMS = [
   { to: '/', label: 'Dashboard' },
@@ -34,6 +35,7 @@ export function AppLayout() {
       <main className="app-content">
         <Outlet />
       </main>
+      <MobileTabBar />
     </div>
   );
 }
