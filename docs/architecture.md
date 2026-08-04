@@ -49,7 +49,7 @@ Sem back-end próprio para hospedar: o front-end fala direto com o Supabase.
 ## 4. Infraestrutura
 
 - **Cloudflare Workers** (Static Assets, não Pages — a própria Cloudflare recomenda Workers para projetos novos): serve o build do Vite (`dist/`), com `run_worker_first` + `not_found_handling: single-page-application` para as rotas do SPA funcionarem, e um `worker.js` mínimo adicionando headers de segurança (`X-Content-Type-Options`, `X-Frame-Options: DENY`, `Referrer-Policy`, `Permissions-Policy`).
-- **GitHub**: repositório único, sem CI/CD automatizado por enquanto (deploy manual via `wrangler deploy`, mesmo fluxo do SweetHub) — pode evoluir para GitHub Actions mais adiante, mas não é bloqueio para o MVP.
+- **GitHub**: repositório único (`Gravit-Studios/Nora`). CI/CD via **Cloudflare Workers Builds**, com integração Git nativa — todo push na branch de produção builda (`npm install && npm run build`) e publica (`npx wrangler deploy`) automaticamente, sem passo manual. Requer a variável de build `VITE_SUPABASE_URL`/`VITE_SUPABASE_ANON_KEY` configuradas no projeto (Settings → Build variables), já que o Vite embute essas variáveis no momento do build, não em runtime.
 - **Backup**: backups automáticos do Postgres já inclusos no plano Supabase.
 - **Monitoramento**: logs do Supabase (Auth, Postgres, Edge Functions) via dashboard; sem componente de observabilidade adicional no MVP.
 
