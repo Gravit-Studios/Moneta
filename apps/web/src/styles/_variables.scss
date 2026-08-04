@@ -1,9 +1,11 @@
 // ── Typography ────────────────────────────────────────────────────────────────
-// Grotesk com personalidade (não Inter, não Space Grotesk) — Bricolage nos
-// títulos/números-herói, onde o caráter "wonky" da fonte aparece; Hanken no
-// corpo, onde precisa de neutralidade e legibilidade em texto pequeno.
-$font-display: 'Bricolage Grotesque Variable', 'Hanken Grotesk', -apple-system, sans-serif;
-$font-sans:    'Hanken Grotesk', -apple-system, 'Segoe UI', system-ui, sans-serif;
+// Briefing de marca (Nora): Manrope / Plus Jakarta Sans / Inter / Geist.
+// Escolhida Plus Jakarta Sans — das opções da lista, a mais calma e menos
+// genérica (Inter é a mais usada de todas em produtos "tech"); uma família
+// só, para os dois papéis, reforça a leitura de "assistente", não "app de
+// planilha".
+$font-display: 'Plus Jakarta Sans Variable', -apple-system, sans-serif;
+$font-sans:    'Plus Jakarta Sans Variable', -apple-system, 'Segoe UI', system-ui, sans-serif;
 $font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
 // ── Spacing ───────────────────────────────────────────────────────────────────

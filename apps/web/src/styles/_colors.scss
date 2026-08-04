@@ -2,68 +2,78 @@ $white: #FFFFFF;
 $black: #000000;
 
 // Escalas de 11 stops (50 → 950), no mesmo formato usado em color-palette-auto.
-// Base neutra com leve viés esverdeado (ligada ao hue da marca) em vez de cinza puro.
-$gray-50:  #FAF9F6;
-$gray-100: #F2F0EA;
-$gray-200: #E4E1D8;
-$gray-300: #CFCABA;
-$gray-400: #A9A392;
-$gray-500: #82796A;
-$gray-600: #625A4C;
-$gray-700: #4A4338;
-$gray-800: #332E27;
-$gray-900: #201C17;
-$gray-950: #14110D;
+// Neutros com viés azul-acinzentado ("branco quente" #F8FAFC + grafite, por
+// definição do briefing de marca — Nora), não mais o tom terroso anterior.
+$gray-50:  #F8FAFC;
+$gray-100: #EEF1F5;
+$gray-200: #E1E5EB;
+$gray-300: #C8CEDA;
+$gray-400: #9AA3B4;
+$gray-500: #6E7688;
+$gray-600: #4F5666;
+$gray-700: #383D4A;
+$gray-800: #262A34;
+$gray-900: #181B22;
+$gray-950: #0E1015;
 
-// Escala de marca — Moneta Green.
-$brand-50:  #F0F7F4;
-$brand-100: #DCEEE7;
-$brand-200: #B9DDCE;
-$brand-300: #8FC7B1;
-$brand-400: #63AD91;
-$brand-500: #3F9277;
-$brand-600: #2B7860;
-$brand-700: #1F6350;
-$brand-800: #17503F;
-$brand-900: #123F32;
-$brand-950: #0B2820;
+// Escala primária — azul moderno (#4F6EF7, briefing de marca), pousa no
+// stop 500. Ação, links, elementos interativos.
+$brand-50:  #EEF1FE;
+$brand-100: #DCE3FD;
+$brand-200: #B9C8FC;
+$brand-300: #93A9F9;
+$brand-400: #7189F9;
+$brand-500: #4F6EF7;
+$brand-600: #3D57DE;
+$brand-700: #2F44B3;
+$brand-800: #253588;
+$brand-900: #1B2761;
+$brand-950: #11173D;
 
-// Dourado de conquista/gamificação — uso pontual, nunca como fundo.
+// Escala secundária — verde suave (#36C690, briefing de marca). Substitui o
+// antigo "highlight" vívido: aqui o objetivo emocional é calma, não impacto
+// — usado em números-herói e confirmações, sem gritar.
+$secondary-50:  #EAFBF4;
+$secondary-100: #CDF5E4;
+$secondary-200: #9EEACB;
+$secondary-300: #6BDCAF;
+$secondary-400: #36C690;
+$secondary-500: #22A876;
+$secondary-600: #18885F;
+$secondary-700: #126A4A;
+$secondary-800: #0D4E37;
+$secondary-900: #093A29;
+$secondary-950: #05241A;
+
+// Dourado de conquista/gamificação — fora do escopo do briefing de marca
+// (que não cobre gamificação), mantido só por necessidade funcional; uso
+// pontual, nunca como fundo.
 $gold-400: #E0B274;
 $gold-500: #C89144;
 $gold-600: #A97530;
 
-// Destaque — verde-limão vívido, mesma família de matiz do brand (não é um
-// neon importado de fora), reservado para números-herói, badges e telas de
-// confirmação. Usado com moderação de propósito — "gastar o ousado num
-// lugar só" — nunca como cor de fundo de página ou botão padrão.
-$highlight-400: #A8E065;
-$highlight-500: #8FD13F;
-$highlight-600: #6FAE2A;
-$on-highlight:  #142911;
+$on-highlight: #0D2318;
 
-// Paleta de categorias — 8 matizes claramente distintos entre si (não
-// variações do mesmo verde da marca), pensada pra diferenciação em tags e
-// gráficos de categoria (ver lib/categoryColor.ts). Cor de marca e cor de
-// categoria são sistemas separados de propósito.
-$cat-1: #2B7860; // verde (mesmo tom do brand-600, serve de âncora)
-$cat-2: #3B6E99; // azul
-$cat-3: #C89144; // âmbar/dourado
-$cat-4: #B4432F; // terracota
-$cat-5: #7A5CC2; // roxo
-$cat-6: #2597A6; // teal
-$cat-7: #C25C8A; // rosa
-$cat-8: #6E6152; // oliva/neutro
+// Paleta de categorias — 8 matizes distintos entre si, ancorados nas cores
+// primária/secundária da marca + variações complementares.
+$cat-1: $secondary-500; // verde
+$cat-2: $brand-500;     // azul
+$cat-3: #C89144;        // âmbar
+$cat-4: #C2694F;        // terracota suave
+$cat-5: #8B7FD1;        // lilás
+$cat-6: #4FA8B0;        // teal
+$cat-7: #C77FA6;        // rosa
+$cat-8: #7A8194;        // grafite-azulado
 
-// Cores de status semânticas — independentes do dourado de marca.
-$status-info:    #3B6E99;
+// Cores de status semânticas.
+$status-info:    $brand-600;
 $status-warn:    $gold-500;
-$status-done:    $brand-600;
+$status-done:    $secondary-600;
 $status-pending: $gray-500;
-$status-danger:  #B4432F;
+$status-danger:  #C2694F;
 
-$status-info-dark:    #6FA3CC;
+$status-info-dark:    $brand-300;
 $status-warn-dark:    $gold-400;
-$status-done-dark:    $brand-400;
+$status-done-dark:    $secondary-400;
 $status-pending-dark: $gray-400;
-$status-danger-dark:  #E08063;
+$status-danger-dark:  #DB9075;
