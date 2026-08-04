@@ -17,10 +17,11 @@ function isSameMonth(dateStr: string, ref: Date): boolean {
 
 // Score 0-100, heurístico e transparente (não é IA) — soma de 4 componentes:
 //
-// - Pontualidade (30 pts): % de contas em aberto que NÃO estão vencidas.
-//   Aproximação: o schema ainda não tem "paid_at", então não dá pra saber se
-//   uma conta paga foi paga antes ou depois do vencimento — só olhamos o que
-//   está em aberto agora.
+// - Pontualidade (30 pts): entre as contas com vencimento no passado (pagas
+//   ou não), qual % foi paga em dia — contas pagas comparam paid_at com
+//   due_date de verdade; contas ainda em aberto e vencidas contam como
+//   atrasadas. Contas com vencimento futuro não entram na conta (ainda não
+//   houve chance de atrasar).
 // - Reserva (20 pts): existe alguma meta concluída com "reserva" no nome
 //   (heurística simples, mesma lógica de texto usada nas conquistas).
 // - Comprometimento com parcelamentos (20 pts): quanto do total de parcelas
@@ -32,9 +33,14 @@ export async function computeFinancialScore(): Promise<FinancialScoreBreakdown> 
   const now = new Date();
   const [incomes, expenses, goals] = await Promise.all([listIncomes(), listExpenses(), listGoals()]);
 
-  const openExpenses = expenses.filter((e) => !e.paid);
-  const overdue = openExpenses.filter((e) => new Date(e.due_date) < new Date(now.toDateString()));
-  const pontualidadePct = openExpenses.length === 0 ? 1 : 1 - overdue.length / openExpenses.length;
+  const today = new Date(now.toDateString());
+  const dueInThePast = expenses.filter((e) => new Date(`${e.due_date}T00:00:00`) < today);
+  const onTime = dueInThePast.filter((e) => {
+    if (!e.paid) return false; // em aberto e já venceu: sempre atrasada
+    if (!e.paid_at) return true; // paga antes da coluna paid_at existir — dá o benefício da dúvida
+    return new Date(e.paid_at) <= new Date(`${e.due_date}T23:59:59`);
+  });
+  const pontualidadePct = dueInThePast.length === 0 ? 1 : onTime.length / dueInThePast.length;
   const pontualidade = Math.round(pontualidadePct * 30);
 
   const reservaCompleta = goals.some(

@@ -43,7 +43,10 @@ export async function createExpense(input: ExpenseInput): Promise<Expense> {
 }
 
 export async function setExpensePaid(id: string, paid: boolean): Promise<void> {
-  const { error } = await supabase.from('expenses').update({ paid }).eq('id', id);
+  const { error } = await supabase
+    .from('expenses')
+    .update({ paid, paid_at: paid ? new Date().toISOString() : null })
+    .eq('id', id);
   if (error) throw new Error(error.message);
 
   if (paid) {

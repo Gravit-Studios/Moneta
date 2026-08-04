@@ -303,3 +303,12 @@ end;
 $$;
 
 grant execute on function public.record_activity(integer, text) to authenticated;
+
+-- =========================================================
+-- paid_at — quando a despesa foi marcada como paga de verdade.
+-- Sem isso, o Score de Saúde Financeira só conseguia aproximar
+-- "pontualidade" olhando se a conta em aberto está vencida agora, não se
+-- ela foi paga antes ou depois do vencimento de fato.
+-- =========================================================
+alter table public.expenses
+  add column if not exists paid_at timestamptz;

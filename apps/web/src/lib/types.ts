@@ -44,6 +44,7 @@ export interface Expense {
   value: number;
   due_date: string;
   paid: boolean;
+  paid_at: string | null;
   payment_method: PaymentMethod;
   cost_center: string | null;
   notes: string | null;
