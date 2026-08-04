@@ -20,6 +20,7 @@
 
 .sidebar__brand {
   font-family: $font-display;
+  font-weight: 800;
   font-size: 20px;
   margin-bottom: $sp6;
   color: var(--color-strong);
@@ -88,8 +89,36 @@
 
 .page-title {
   font-family: $font-display;
+  font-weight: 700;
   font-size: 26px;
   margin: 0 0 $sp6;
+}
+
+// Número em destaque — saldo do dashboard, valor de um cartão, etc. Sans
+// bold grande (não mono): é o único lugar que pede impacto visual em vez
+// de alinhamento tabular; listas continuam em $font-mono.
+.hero-number {
+  font-family: $font-display;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  font-size: 40px;
+  letter-spacing: -0.01em;
+  color: var(--color-default);
+}
+
+.hero-number--highlight {
+  color: var(--color-highlight);
+}
+
+.hero-card {
+  background: var(--color-strong);
+  border-radius: $r-2xl;
+  padding: $sp6 $sp6;
+  margin-bottom: $sp4;
+
+  .widget__label { color: var(--color-on-primary); opacity: 0.7; }
+  .hero-number { color: var(--color-on-primary); }
+  .hero-number--highlight { color: var(--color-highlight); }
 }
 
 .widget-grid {

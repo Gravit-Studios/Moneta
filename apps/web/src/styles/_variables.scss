@@ -1,7 +1,10 @@
 // ── Typography ────────────────────────────────────────────────────────────────
-$font-display: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
-$font-sans:    -apple-system, 'Segoe UI', system-ui, sans-serif;
-$font-mono:    ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, monospace;
+// Grotesk com personalidade (não Inter, não Space Grotesk) — Bricolage nos
+// títulos/números-herói, onde o caráter "wonky" da fonte aparece; Hanken no
+// corpo, onde precisa de neutralidade e legibilidade em texto pequeno.
+$font-display: 'Bricolage Grotesque Variable', 'Hanken Grotesk', -apple-system, sans-serif;
+$font-sans:    'Hanken Grotesk', -apple-system, 'Segoe UI', system-ui, sans-serif;
+$font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
 // ── Spacing ───────────────────────────────────────────────────────────────────
 $sp1:  4px;

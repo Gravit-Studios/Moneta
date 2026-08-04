@@ -60,11 +60,14 @@ export function DashboardPage() {
         <p className="text-muted">Carregando…</p>
       ) : (
         <>
-          <div className="widget-grid">
-            <div className="widget">
-              <div className="widget__label">Saldo do mês</div>
-              <div className="widget__value">{currency(saldoAtual)}</div>
+          <div className="hero-card">
+            <div className="widget__label">Saldo do mês</div>
+            <div className={`hero-number${saldoAtual >= 0 ? ' hero-number--highlight' : ''}`}>
+              {currency(saldoAtual)}
             </div>
+          </div>
+
+          <div className="widget-grid">
             <div className="widget">
               <div className="widget__label">Receitas do mês</div>
               <div className="widget__value">{currency(receitasMes)}</div>

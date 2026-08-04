@@ -13,6 +13,8 @@
   --color-emphasis:    #{$brand-600};
   --color-strong:      #{$brand-700};
   --color-on-primary:  #{$gray-50};
+  --color-highlight:   #{$highlight-500};
+  --color-on-highlight: #{$on-highlight};
 
   // Status — light
   --color-status-info:    #{$status-info};
@@ -57,6 +59,8 @@
   --color-emphasis:   #{$brand-400};
   --color-strong:     #{$brand-300};
   --color-on-primary: #{$gray-950};
+  --color-highlight:  #{$highlight-400};
+  --color-on-highlight: #{$on-highlight};
 
   --color-status-info:    #{$status-info-dark};
   --color-status-warn:    #{$status-warn-dark};
@@ -81,6 +85,8 @@
   --color-emphasis:   #{$brand-600};
   --color-strong:     #{$brand-700};
   --color-on-primary: #{$gray-50};
+  --color-highlight:  #{$highlight-500};
+  --color-on-highlight: #{$on-highlight};
 
   --color-status-info:    #{$status-info};
   --color-status-warn:    #{$status-warn};

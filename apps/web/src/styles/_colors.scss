@@ -33,6 +33,15 @@ $gold-400: #E0B274;
 $gold-500: #C89144;
 $gold-600: #A97530;
 
+// Destaque — verde-limão vívido, mesma família de matiz do brand (não é um
+// neon importado de fora), reservado para números-herói, badges e telas de
+// confirmação. Usado com moderação de propósito — "gastar o ousado num
+// lugar só" — nunca como cor de fundo de página ou botão padrão.
+$highlight-400: #A8E065;
+$highlight-500: #8FD13F;
+$highlight-600: #6FAE2A;
+$on-highlight:  #142911;
+
 // Cores de status semânticas — independentes do dourado de marca.
 $status-info:    #3B6E99;
 $status-warn:    $gold-500;
