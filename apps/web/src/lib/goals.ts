@@ -30,7 +30,11 @@ export async function createGoal(input: GoalInput): Promise<Goal> {
     .select()
     .single();
   if (error) throw new Error(error.message);
-  await recordActivity(5);
+  // "Reserva criada" — heurística por nome, mesma usada no Score de Saúde
+  // Financeira (lib/financialScore.ts). É a criação da meta que conta, não
+  // a conclusão dela.
+  const isReserva = input.name.toLowerCase().includes('reserva');
+  await recordActivity(5, isReserva ? 'reserva_criada' : undefined);
   return data;
 }
 

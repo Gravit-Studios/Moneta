@@ -312,3 +312,71 @@ grant execute on function public.record_activity(integer, text) to authenticated
 -- =========================================================
 alter table public.expenses
   add column if not exists paid_at timestamptz;
+
+-- =========================================================
+-- Conquistas de fechamento de mês (primeiro_mes_organizado,
+-- primeiro_mes_sem_atraso) — precisam saber que o mês "fechou" pra avaliar,
+-- então rodam num job agendado (pg_cron), não em resposta a uma ação do
+-- usuário como as outras conquistas.
+--
+-- Rode este bloco no SQL Editor. A extensão pg_cron normalmente já vem
+-- habilitada nos projetos Supabase; se o "create extension" abaixo falhar,
+-- habilite manualmente em Database -> Extensions -> pg_cron antes de
+-- rodar o resto do bloco.
+-- =========================================================
+create extension if not exists pg_cron with schema extensions;
+
+-- security definer: pg_cron roda fora do contexto de um usuário logado
+-- (não existe auth.uid() aqui), então a função precisa varrer todos os
+-- usuários e inserir conquistas em nome de cada um — só é seguro porque
+-- não recebe nenhuma entrada do usuário, só lê datas.
+create or replace function public.evaluate_month_end_achievements()
+returns void
+language plpgsql
+security definer set search_path = public
+as $$
+declare
+  month_start date := date_trunc('month', now() - interval '1 month')::date;
+  month_end date := (date_trunc('month', now()) - interval '1 day')::date;
+  person record;
+begin
+  for person in select id from auth.users loop
+    -- "Sem atraso": teve pelo menos uma despesa vencendo no mês passado, e
+    -- nenhuma delas ficou sem pagar ou foi paga depois do vencimento.
+    if exists (
+      select 1 from public.expenses e
+      where e.user_id = person.id and e.due_date between month_start and month_end
+    ) and not exists (
+      select 1 from public.expenses e
+      where e.user_id = person.id and e.due_date between month_start and month_end
+        and (e.paid = false or e.paid_at is null or e.paid_at::date > e.due_date)
+    ) then
+      insert into public.user_achievements (user_id, achievement_key)
+      values (person.id, 'primeiro_mes_sem_atraso')
+      on conflict (user_id, achievement_key) do nothing;
+    end if;
+
+    -- "Mês organizado": lançou receita e despesas com regularidade no mês
+    -- (pelo menos 1 receita + 3 despesas), não só uma vez ou outra.
+    if (
+      select count(*) from public.incomes i
+      where i.user_id = person.id and i.date between month_start and month_end
+    ) >= 1 and (
+      select count(*) from public.expenses e
+      where e.user_id = person.id and e.due_date between month_start and month_end
+    ) >= 3 then
+      insert into public.user_achievements (user_id, achievement_key)
+      values (person.id, 'primeiro_mes_organizado')
+      on conflict (user_id, achievement_key) do nothing;
+    end if;
+  end loop;
+end;
+$$;
+
+-- Todo dia 2 do mês às 06:00 UTC — dá uma folga de um dia pro fuso
+-- horário do usuário não cortar o último dia do mês anterior no meio.
+select cron.schedule(
+  'nora-month-end-achievements',
+  '0 6 2 * *',
+  $$select public.evaluate_month_end_achievements();$$
+);

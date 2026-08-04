@@ -6,12 +6,21 @@ export interface ProfileStats {
   longest_streak: number;
 }
 
-export type AchievementKey = 'primeira_meta_concluida' | 'cem_contas_pagas' | 'divida_quitada';
+export type AchievementKey =
+  | 'primeira_meta_concluida'
+  | 'cem_contas_pagas'
+  | 'divida_quitada'
+  | 'reserva_criada'
+  | 'primeiro_mes_organizado'
+  | 'primeiro_mes_sem_atraso';
 
 export const ACHIEVEMENTS: Record<AchievementKey, string> = {
   primeira_meta_concluida: 'Primeira meta concluída',
   cem_contas_pagas: '100 contas pagas',
   divida_quitada: 'Dívida quitada',
+  reserva_criada: 'Reserva criada',
+  primeiro_mes_organizado: 'Primeiro mês organizado',
+  primeiro_mes_sem_atraso: 'Primeiro mês sem atraso',
 };
 
 export const LEVELS = [
