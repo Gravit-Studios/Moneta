@@ -5,7 +5,7 @@ import { listExpenses } from '../lib/expenses';
 import { currency } from '../lib/format';
 import { listGoals } from '../lib/goals';
 import { listIncomes } from '../lib/incomes';
-import { noraMessage } from '../lib/noraMessage';
+import { noraMessage, NoraMessageResult } from '../lib/noraMessage';
 import { Expense, Goal, Income } from '../lib/types';
 
 function isSameMonth(dateStr: string, ref: Date): boolean {
@@ -17,7 +17,7 @@ function isSameMonth(dateStr: string, ref: Date): boolean {
 // seção Interface): saldo, próximas contas, meta principal, resumo do
 // mês, mensagem da Nora — poucos elementos, não um grid denso de widgets.
 export function DashboardPage() {
-  const [message, setMessage] = useState<string | null>(null);
+  const [message, setMessage] = useState<NoraMessageResult | null>(null);
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [incomes, setIncomes] = useState<Income[]>([]);
   const [mainGoal, setMainGoal] = useState<Goal | null>(null);
@@ -62,7 +62,7 @@ export function DashboardPage() {
         <p className="text-muted">Carregando…</p>
       ) : (
         <>
-          {message && <NoraMessage message={message} />}
+          {message && <NoraMessage message={message.text} state={message.state} />}
 
           <div className="hero-card">
             <div className="widget__label">Saldo</div>

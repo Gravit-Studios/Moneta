@@ -163,6 +163,9 @@
   border-radius: $r-2xl;
   padding: $sp6 $sp6;
   margin-bottom: $sp4;
+  // Sombra tingida de primária (Documento Técnico de Identidade Visual) —
+  // dá profundidade sem recorrer a borda ou cinza neutro.
+  box-shadow: 0 8px 32px color-mix(in srgb, var(--color-emphasis) 18%, transparent);
 
   .widget__label { color: var(--color-on-primary); opacity: 0.7; }
   .hero-number { color: var(--color-on-primary); }
@@ -409,6 +412,93 @@
 .achievement-badge.is-unlocked .achievement-badge__label {
   color: var(--color-default);
   font-weight: 600;
+}
+
+// ── Símbolo orbital da Nora ──────────────────────────────────────────────
+// Estados da IA (Documento Técnico): boas-vindas = órbitas lentas,
+// analisando = convergência, informando = pulso vertical, alerta = halo
+// âmbar, sucesso/meta concluída = expansão com brilho. Motion 200-500ms,
+// ease-out, escala máxima 1.05 — nada chamativo demais.
+.nora-mark__orbit,
+.nora-mark__halo,
+.nora-mark__core {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+
+.nora-mark__halo { opacity: 0; }
+
+.nora-mark--welcome .nora-mark__orbit,
+.nora-mark--informing .nora-mark__orbit,
+.nora-mark--success .nora-mark__orbit,
+.nora-mark--goal-complete .nora-mark__orbit {
+  animation: nora-orbit 9s linear infinite;
+}
+
+.nora-mark--analyzing .nora-mark__orbit {
+  animation: nora-orbit 2.4s linear infinite;
+}
+.nora-mark--analyzing .nora-mark__core {
+  animation: nora-pulse-scale .5s ease-out infinite alternate;
+}
+
+.nora-mark--informing .nora-mark__core {
+  animation: nora-pulse-vertical 1.4s ease-in-out infinite;
+}
+
+.nora-mark--alert .nora-mark__halo {
+  animation: nora-halo-pulse 1.6s ease-out infinite;
+}
+
+.nora-mark--success .nora-mark__core {
+  animation: nora-burst .5s ease-out;
+}
+
+.nora-mark--goal-complete .nora-mark__core {
+  animation: nora-burst-strong .5s ease-out;
+}
+.nora-mark--goal-complete .nora-mark__halo {
+  stroke: var(--color-status-warn);
+  animation: nora-halo-pulse .5s ease-out;
+}
+
+@keyframes nora-orbit { to { transform: rotate(360deg); } }
+
+@keyframes nora-pulse-scale {
+  from { transform: scale(1); }
+  to   { transform: scale(1.05); }
+}
+
+@keyframes nora-pulse-vertical {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-1.5px); }
+}
+
+@keyframes nora-halo-pulse {
+  0%   { opacity: .55; transform: scale(1); }
+  70%  { opacity: 0; transform: scale(1.15); }
+  100% { opacity: 0; transform: scale(1.15); }
+}
+
+@keyframes nora-burst {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+@keyframes nora-burst-strong {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(1.05); }
+  60%  { transform: scale(.98); }
+  100% { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nora-mark__orbit,
+  .nora-mark__core,
+  .nora-mark__halo {
+    animation: none !important;
+  }
 }
 
 .nora-message {
