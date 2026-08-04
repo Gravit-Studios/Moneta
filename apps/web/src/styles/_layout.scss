@@ -261,6 +261,63 @@
   opacity: 0.85;
 }
 
+// Tela de transição de sucesso — overlay de tela cheia com um "burst"
+// radial, disparado depois de salvar algo (ver components/SuccessOverlay).
+@keyframes success-burst-pulse {
+  0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-highlight) 45%, transparent); }
+  70%  { box-shadow: 0 0 0 22px color-mix(in srgb, var(--color-highlight) 0%, transparent); }
+  100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-highlight) 0%, transparent); }
+}
+
+@keyframes success-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.success-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $sp5;
+  background: color-mix(in srgb, var(--color-background) 92%, transparent);
+  backdrop-filter: blur(2px);
+  cursor: pointer;
+  animation: success-fade-in $t-base;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+.success-burst {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--color-highlight);
+  color: var(--color-on-highlight);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: success-burst-pulse 1.1s ease-out;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+.success-message {
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--color-default);
+  text-align: center;
+  max-width: 260px;
+}
+
 .btn {
   font-size: 14.5px;
   font-weight: 600;

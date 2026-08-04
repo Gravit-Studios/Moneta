@@ -1,4 +1,5 @@
 import { CSSProperties, FormEvent, useEffect, useState } from 'react';
+import { SuccessOverlay } from '../components/SuccessOverlay';
 import { categoryColorVar } from '../lib/categoryColor';
 import { listCategories } from '../lib/categories';
 import { currency, shortDate } from '../lib/format';
@@ -17,6 +18,7 @@ export function IncomesPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const [name, setName] = useState('');
   const [value, setValue] = useState('');
@@ -50,6 +52,7 @@ export function IncomesPage() {
       await createIncome({ name, value: Number(value), categoryId, date, recurrence });
       setName('');
       setValue('');
+      setShowSuccess(true);
       await refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Não foi possível criar a receita.');
@@ -144,6 +147,10 @@ export function IncomesPage() {
             </div>
           ))}
         </div>
+      )}
+
+      {showSuccess && (
+        <SuccessOverlay message="Receita adicionada!" onDone={() => setShowSuccess(false)} />
       )}
     </div>
   );

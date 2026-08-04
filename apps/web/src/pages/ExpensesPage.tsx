@@ -1,4 +1,5 @@
 import { CSSProperties, FormEvent, useEffect, useState } from 'react';
+import { SuccessOverlay } from '../components/SuccessOverlay';
 import { categoryColorVar } from '../lib/categoryColor';
 import { listCategories } from '../lib/categories';
 import { createExpense, deleteExpense, listExpenses, setExpensePaid } from '../lib/expenses';
@@ -25,6 +26,7 @@ export function ExpensesPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const [name, setName] = useState('');
   const [value, setValue] = useState('');
@@ -58,6 +60,7 @@ export function ExpensesPage() {
       await createExpense({ name, value: Number(value), categoryId, dueDate, paymentMethod });
       setName('');
       setValue('');
+      setShowSuccess(true);
       await refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Não foi possível criar a despesa.');
@@ -167,6 +170,10 @@ export function ExpensesPage() {
             );
           })}
         </div>
+      )}
+
+      {showSuccess && (
+        <SuccessOverlay message="Despesa adicionada!" onDone={() => setShowSuccess(false)} />
       )}
     </div>
   );
