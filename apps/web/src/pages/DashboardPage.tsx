@@ -1,12 +1,23 @@
-import { useEffect, useMemo, useState } from 'react';
+import { CSSProperties, useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { CategoryDonut } from '../components/CategoryDonut';
 import { NoraMessage } from '../components/NoraMessage';
 import { QuickAddExpense } from '../components/QuickAddExpense';
+import { listCategories } from '../lib/categories';
+import { categoryColorVar } from '../lib/categoryColor';
 import { listExpenses } from '../lib/expenses';
 import { currency } from '../lib/format';
 import { listGoals } from '../lib/goals';
 import { listIncomes } from '../lib/incomes';
 import { noraMessage, NoraMessageResult } from '../lib/noraMessage';
-import { Expense, Goal, Income } from '../lib/types';
+import { Category, Expense, Goal, Income } from '../lib/types';
+
+const SHORTCUTS = [
+  { to: '/despesas', icon: '💸', label: 'Despesas' },
+  { to: '/receitas', icon: '💰', label: 'Receitas' },
+  { to: '/metas', icon: '🎯', label: 'Metas' },
+  { to: '/cartoes', icon: '💳', label: 'Cartões' },
+];
 
 function isSameMonth(dateStr: string, ref: Date): boolean {
   const d = new Date(`${dateStr}T00:00:00`);
@@ -21,16 +32,18 @@ export function DashboardPage() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [incomes, setIncomes] = useState<Income[]>([]);
   const [mainGoal, setMainGoal] = useState<Goal | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [showQuickAdd, setShowQuickAdd] = useState(false);
 
   function refresh() {
-    Promise.all([noraMessage(), listExpenses(), listIncomes(), listGoals()])
-      .then(([m, e, i, goals]) => {
+    Promise.all([noraMessage(), listExpenses(), listIncomes(), listGoals(), listCategories('expense')])
+      .then(([m, e, i, goals, cats]) => {
         setMessage(m);
         setExpenses(e);
         setIncomes(i);
+        setCategories(cats);
         // "Meta principal" — a mais próxima da data prevista, entre as
         // ainda não concluídas.
         const open = goals.filter((g) => g.current_value < g.target_value);
@@ -55,6 +68,27 @@ export function DashboardPage() {
     .sort((a, b) => a.due_date.localeCompare(b.due_date))
     .slice(0, 3);
 
+  // Top 4 categorias do mês por valor gasto, pro donut + cards de
+  // destaque — o resto agrupado em "outros" pra não competir com o
+  // padrão "poucos elementos" da Nora.
+  const categoriaTotais = useMemo(() => {
+    const byCategory = new Map<string, number>();
+    for (const e of expenses) {
+      if (!isSameMonth(e.due_date, now)) continue;
+      byCategory.set(e.category_id, (byCategory.get(e.category_id) ?? 0) + e.value);
+    }
+    const rows = Array.from(byCategory.entries())
+      .map(([categoryId, value]) => ({
+        categoryId,
+        name: categories.find((c) => c.id === categoryId)?.name ?? '—',
+        value,
+      }))
+      .sort((a, b) => b.value - a.value);
+    const top = rows.slice(0, 4);
+    const outrosValue = rows.slice(4).reduce((sum, r) => sum + r.value, 0);
+    return outrosValue > 0 ? [...top, { categoryId: 'outros', name: 'Outros', value: outrosValue }] : top;
+  }, [expenses, categories, now]);
+
   return (
     <div>
       {error && <p style={{ color: 'var(--color-status-danger)' }}>{error}</p>}
@@ -68,6 +102,44 @@ export function DashboardPage() {
             <div className="widget__label">Saldo</div>
             <div className="hero-number">{currency(saldo)}</div>
           </div>
+
+          <div className="shortcut-row">
+            {SHORTCUTS.map((s) => (
+              <Link key={s.to} to={s.to} className="shortcut-item">
+                <span className="shortcut-item__icon">{s.icon}</span>
+                <span>{s.label}</span>
+              </Link>
+            ))}
+          </div>
+
+          {categoriaTotais.length > 0 && (
+            <>
+              <h2 className="page-title" style={{ fontSize: 17, marginTop: 32 }}>Gastos por categoria</h2>
+              <div className="category-highlight">
+                <CategoryDonut
+                  centerLabel="no mês"
+                  centerValue={currency(despesasMes)}
+                  slices={categoriaTotais.map((c) => ({
+                    colorVar: c.categoryId === 'outros' ? 'var(--color-muted)' : categoryColorVar(c.categoryId),
+                    value: c.value,
+                  }))}
+                />
+                <div className="category-highlight__tiles">
+                  {categoriaTotais.map((c) => (
+                    <div
+                      key={c.categoryId}
+                      className="category-tile"
+                      style={{ '--cat-color': c.categoryId === 'outros' ? 'var(--color-muted)' : categoryColorVar(c.categoryId) } as CSSProperties}
+                    >
+                      <div className="category-tile__name">{c.name}</div>
+                      <div className="category-tile__value">{currency(c.value)}</div>
+                      <div className="category-tile__pct">{Math.round((c.value / (despesasMes || 1)) * 100)}%</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
 
           <h2 className="page-title" style={{ fontSize: 17, marginTop: 32 }}>Próximas contas</h2>
           {proximasContas.length === 0 ? (
