@@ -1,5 +1,6 @@
 import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { NoraMark } from '../components/NoraMark';
 import { api } from '../lib/api';
 
 export function LoginPage() {
@@ -26,6 +27,7 @@ export function LoginPage() {
   return (
     <div className="auth-page">
       <form className="auth-card" onSubmit={handleSubmit}>
+        <div style={{ marginBottom: 16 }}><NoraMark size={40} /></div>
         <h1 className="page-title" style={{ fontSize: 22 }}>Entrar na Nora</h1>
 
         <div className="form-field">

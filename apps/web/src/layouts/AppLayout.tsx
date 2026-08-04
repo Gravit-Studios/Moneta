@@ -1,5 +1,6 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import { MobileTabBar } from '../components/MobileTabBar';
+import { NoraMark } from '../components/NoraMark';
 
 const NAV_ITEMS = [
   { to: '/', label: 'Dashboard' },
@@ -20,7 +21,10 @@ export function AppLayout() {
   return (
     <div className="app-shell">
       <nav className="sidebar">
-        <div className="sidebar__brand">nora</div>
+        <div className="sidebar__brand">
+          <NoraMark size={24} />
+          nora
+        </div>
         {NAV_ITEMS.map((item) => (
           <NavLink
             key={item.to}
