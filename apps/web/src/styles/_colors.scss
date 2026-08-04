@@ -16,41 +16,41 @@ $gray-800: #262A34;
 $gray-900: #181B22;
 $gray-950: #0E1015;
 
-// Escala primária — azul moderno (#4F6EF7, briefing de marca), pousa no
-// stop 500. Ação, links, elementos interativos.
-$brand-50:  #EEF1FE;
-$brand-100: #DCE3FD;
-$brand-200: #B9C8FC;
-$brand-300: #93A9F9;
-$brand-400: #7189F9;
-$brand-500: #4F6EF7;
-$brand-600: #3D57DE;
-$brand-700: #2F44B3;
-$brand-800: #253588;
-$brand-900: #1B2761;
-$brand-950: #11173D;
+// Escala primária — roxo vívido (#6B46FF, ajuste de marca). Ação, links,
+// elementos interativos.
+$brand-50:  #F2EEFF;
+$brand-100: #E5DCFF;
+$brand-200: #CBB8FF;
+$brand-300: #AD8FFF;
+$brand-400: #8F68FF;
+$brand-500: #6B46FF;
+$brand-600: #5732E0;
+$brand-700: #4325B0;
+$brand-800: #331C86;
+$brand-900: #241360;
+$brand-950: #180D42;
 
-// Escala secundária — verde suave (#36C690, briefing de marca). Substitui o
-// antigo "highlight" vívido: aqui o objetivo emocional é calma, não impacto
-// — usado em números-herói e confirmações, sem gritar.
-$secondary-50:  #EAFBF4;
-$secondary-100: #CDF5E4;
-$secondary-200: #9EEACB;
-$secondary-300: #6BDCAF;
-$secondary-400: #36C690;
-$secondary-500: #22A876;
-$secondary-600: #18885F;
-$secondary-700: #126A4A;
-$secondary-800: #0D4E37;
-$secondary-900: #093A29;
-$secondary-950: #05241A;
+// Escala secundária — ciano/teal vívido (#00D1C1, ajuste de marca), pousa
+// no stop 400 (mesma convenção anterior: 400 = tom vívido de destaque,
+// 500 = versão levemente mais escura para texto/estado "concluído").
+$secondary-50:  #E3FBFA;
+$secondary-100: #B3F3EF;
+$secondary-200: #7FEAE3;
+$secondary-300: #47DFD6;
+$secondary-400: #00D1C1;
+$secondary-500: #00AEA0;
+$secondary-600: #008D81;
+$secondary-700: #007067;
+$secondary-800: #00564F;
+$secondary-900: #00403B;
+$secondary-950: #002926;
 
-// Dourado de conquista/gamificação — fora do escopo do briefing de marca
-// (que não cobre gamificação), mantido só por necessidade funcional; uso
-// pontual, nunca como fundo.
-$gold-400: #E0B274;
-$gold-500: #C89144;
-$gold-600: #A97530;
+// Terciária — âmbar (#FFC857, ajuste de marca). Usada em conquistas/
+// gamificação e como cor de estado "atenção" (status-warn).
+$gold-300: #FFDFA3;
+$gold-400: #FFC857;
+$gold-500: #E0A83A;
+$gold-600: #B8862A;
 
 $on-highlight: #0D2318;
 
