@@ -5,7 +5,7 @@
   // segurança) antes de cair nos assets. "single-page-application" serve o
   // index.html pra qualquer rota que não bata com um arquivo real, para o
   // roteamento do React Router funcionar.
-  "name": "moneta",
+  "name": "nora",
   "compatibility_date": "2026-07-19",
   "main": "worker.js",
   "assets": {
