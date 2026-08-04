@@ -12,15 +12,19 @@ import { IncomesPage } from './pages/IncomesPage';
 import { InstallmentsPage } from './pages/InstallmentsPage';
 import { LoginPage } from './pages/LoginPage';
 import { MorePage } from './pages/MorePage';
+import { OnboardingPage } from './pages/OnboardingPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { RecurringBillsPage } from './pages/RecurringBillsPage';
+import { RegisterPage } from './pages/RegisterPage';
 import { ReportsPage } from './pages/ReportsPage';
 
 export function App() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/cadastro" element={<RegisterPage />} />
       <Route element={<RequireAuth />}>
+        <Route path="/onboarding" element={<OnboardingPage />} />
         <Route element={<AppLayout />}>
           <Route path="/" element={<DashboardPage />} />
           <Route path="/receitas" element={<IncomesPage />} />

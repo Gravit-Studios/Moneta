@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { NoraMessage } from '../components/NoraMessage';
+import { QuickAddExpense } from '../components/QuickAddExpense';
 import { listExpenses } from '../lib/expenses';
 import { currency } from '../lib/format';
 import { listGoals } from '../lib/goals';
@@ -22,8 +23,9 @@ export function DashboardPage() {
   const [mainGoal, setMainGoal] = useState<Goal | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showQuickAdd, setShowQuickAdd] = useState(false);
 
-  useEffect(() => {
+  function refresh() {
     Promise.all([noraMessage(), listExpenses(), listIncomes(), listGoals()])
       .then(([m, e, i, goals]) => {
         setMessage(m);
@@ -38,7 +40,9 @@ export function DashboardPage() {
       })
       .catch((err) => setError(err instanceof Error ? err.message : 'Erro ao carregar o dashboard.'))
       .finally(() => setLoading(false));
-  }, []);
+  }
+
+  useEffect(refresh, []);
 
   const now = useMemo(() => new Date(), []);
 
@@ -113,6 +117,12 @@ export function DashboardPage() {
             </div>
           </div>
         </>
+      )}
+
+      <button className="fab" aria-label="Adicionar despesa" onClick={() => setShowQuickAdd(true)}>+</button>
+
+      {showQuickAdd && (
+        <QuickAddExpense onClose={() => setShowQuickAdd(false)} onCreated={refresh} />
       )}
     </div>
   );
