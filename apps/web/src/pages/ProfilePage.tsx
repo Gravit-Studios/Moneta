@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AchievementBadge } from '../components/AchievementBadge';
 import { api, Profile } from '../lib/api';
 import {
   ACHIEVEMENTS,
@@ -92,11 +93,9 @@ export function ProfilePage() {
             );
           })()}
           <p className="text-muted" style={{ marginTop: 12, marginBottom: 6 }}>Conquistas</p>
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <div className="achievement-grid">
             {(Object.entries(ACHIEVEMENTS) as [AchievementKey, string][]).map(([key, label]) => (
-              <span key={key} className={`chip chip--${unlocked.includes(key) ? 'done' : 'pending'}`}>
-                {label}
-              </span>
+              <AchievementBadge key={key} label={label} unlocked={unlocked.includes(key)} />
             ))}
           </div>
         </div>

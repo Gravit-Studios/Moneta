@@ -318,6 +318,51 @@
   max-width: 260px;
 }
 
+.achievement-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  gap: $sp4;
+  margin-top: $sp2;
+}
+
+.achievement-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.achievement-badge__seal {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-subtle);
+  color: var(--color-muted);
+  border: 1px solid var(--color-subtle);
+}
+
+.achievement-badge.is-unlocked .achievement-badge__seal {
+  background: linear-gradient(160deg, color-mix(in srgb, var(--color-status-warn) 85%, white), var(--color-status-warn));
+  color: var(--color-on-highlight);
+  border-color: transparent;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--color-status-warn) 45%, transparent);
+}
+
+.achievement-badge__label {
+  font-size: 11px;
+  color: var(--color-muted);
+  line-height: 1.25;
+}
+
+.achievement-badge.is-unlocked .achievement-badge__label {
+  color: var(--color-default);
+  font-weight: 600;
+}
+
 .btn {
   font-size: 14.5px;
   font-weight: 600;
