@@ -1,7 +1,7 @@
-# Moneta
+# Nora
 
-Moneta é uma plataforma de gestão financeira pessoal focada em planejamento, organização e evolução financeira — um assistente financeiro inteligente que ajuda o usuário a entender sua situação atual, prever seu futuro financeiro e atingir objetivos através de dados, automações e gamificação.
+Nora é uma assistente financeira pessoal — não um aplicativo de controle financeiro tradicional. Ela acompanha o usuário diariamente, lembra compromissos, incentiva bons hábitos, antecipa problemas e celebra conquistas, ajudando a transformar organização em tranquilidade e planejamento em conquistas.
 
 > "Organize seu dinheiro. Planeje seu futuro. Conquiste seus objetivos."
 
-Veja o documento completo de visão do produto em [`docs/product-vision.md`](docs/product-vision.md).
+Veja o documento completo de visão do produto em [`docs/product-vision.md`](docs/product-vision.md) e o briefing de marca em [`docs/nora-brand-brief.md`](docs/nora-brand-brief.md).

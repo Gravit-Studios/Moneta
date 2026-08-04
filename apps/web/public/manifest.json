@@ -1,13 +1,13 @@
 {
-  "name": "Moneta — Organize seu dinheiro, planeje seu futuro",
-  "short_name": "Moneta",
-  "description": "Planejamento e organização financeira pessoal.",
+  "name": "Nora — sua assistente financeira",
+  "short_name": "Nora",
+  "description": "Planejamento e organização financeira pessoal, com uma companhia.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#F7F5EF",
-  "theme_color": "#145C49",
+  "background_color": "#F8FAFC",
+  "theme_color": "#4F6EF7",
   "lang": "pt-BR",
   "icons": [
     { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },

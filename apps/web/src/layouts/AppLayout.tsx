@@ -20,7 +20,7 @@ export function AppLayout() {
   return (
     <div className="app-shell">
       <nav className="sidebar">
-        <div className="sidebar__brand">moneta</div>
+        <div className="sidebar__brand">nora</div>
         {NAV_ITEMS.map((item) => (
           <NavLink
             key={item.to}

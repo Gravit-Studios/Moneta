@@ -3,7 +3,7 @@
 @use 'tokens';
 @use 'layout';
 
-// Ponto de entrada único do design system do Moneta.
+// Ponto de entrada único do design system da Nora.
 // Componentes consomem as variáveis CSS (--color-*, --scale-*) definidas em
 // _tokens.scss, nunca as variáveis Sass ($brand-600 etc.) diretamente — isso
 // mantém o theming (light/dark) funcionando sem reprocessar Sass em runtime.

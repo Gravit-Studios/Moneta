@@ -1,4 +1,4 @@
-# Moneta — Design System e Wireframes (Sprint 0)
+# Nora — Design System e Wireframes (Sprint 0)
 
 Referência visual publicada: [Design System & Wireframes (artifact)](https://claude.ai/code/artifact/5f38c7ac-7390-4074-a338-0f819d76a61e)
 

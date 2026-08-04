@@ -1,4 +1,4 @@
-# Moneta — Pesquisa de Mercado (Sprint 0 — Descoberta)
+# Nora — Pesquisa de Mercado (Sprint 0 — Descoberta)
 
 ## 1. Concorrentes diretos (Brasil/LatAm)
 
@@ -17,21 +17,21 @@
 ## 2. Gaps de mercado
 
 - **Já bem resolvido pelos concorrentes**: registro/categorização de receitas e despesas, integração bancária via Open Finance (Organizze, GuiaBolso/PicPay, FinançasPro), compartilhamento familiar (Organizze).
-- **Espaço aberto para o Moneta**:
+- **Espaço aberto para a Nora**:
   - (a) Projeção financeira de médio/longo prazo — nenhum concorrente pesquisado destaca isso como pilar.
   - (b) Gamificação robusta e contínua ligada a metas de vida — apenas menções superficiais/incipientes (FinançasPro; tendência emergente ainda não consolidada).
-  - (c) Simplicidade + engajamento contínuo — a queixa recorrente hoje é ou complexidade (Mobills) ou simplicidade sem incentivo de uso (Organizze). O Moneta pode se posicionar no meio, unindo simplicidade de entrada com jornada gamificada orientada a objetivos (aposentadoria, casa própria, viagem etc.) — combinação não encontrada consolidada em nenhum player nacional pesquisado.
+  - (c) Simplicidade + engajamento contínuo — a queixa recorrente hoje é ou complexidade (Mobills) ou simplicidade sem incentivo de uso (Organizze). A Nora pode se posicionar no meio, unindo simplicidade de entrada com jornada gamificada orientada a objetivos (aposentadoria, casa própria, viagem etc.) — combinação não encontrada consolidada em nenhum player nacional pesquisado.
 
 ## 3. Validação do público-alvo
 
 Indícios qualitativos fortes de adoção digital: 66% dos brasileiros usam apps para pagamentos/consulta de saldo (Ipsos/Nubank); 95% das gerações Z/Y e 93% da geração X acessam contas via apps; mais de 42 milhões de usuários aderiram ao Open Finance até 2024.
 
-Por outro lado, ~47% dos jovens da Geração Z não fazem controle financeiro algum (CNDL/SPC Brasil), sugerindo que a adoção de apps de *pagamento* é alta, mas a adoção de apps de *planejamento* ainda é baixa — o que valida a tese de que existe demanda latente não atendida por ferramentas de puro registro, reforçando a oportunidade do Moneta com foco em planejamento/projeção, não apenas lançamento de gastos.
+Por outro lado, ~47% dos jovens da Geração Z não fazem controle financeiro algum (CNDL/SPC Brasil), sugerindo que a adoção de apps de *pagamento* é alta, mas a adoção de apps de *planejamento* ainda é baixa — o que valida a tese de que existe demanda latente não atendida por ferramentas de puro registro, reforçando a oportunidade da Nora com foco em planejamento/projeção, não apenas lançamento de gastos.
 
 ## 4. Riscos/considerações regulatórias
 
-- **Open Finance (Banco Central)**: integração bancária exige consentimento explícito, revogável e com prazo definido — o Moneta precisará implementar um fluxo de consentimento robusto caso venha a integrar contas bancárias (previsto para a v3 do produto). Mudança relevante em 2026: portabilidade de crédito via Open Finance com prazo reduzido para 3 dias úteis (crédito pessoal desde fev/2026, consignado previsto até nov/2026) — não afeta diretamente o MVP, mas mostra o escopo crescente do sistema.
-- **LGPD**: dados financeiros exigem consentimento livre, informado e específico (não vale "aceitar tudo"), minimização de dados, medidas de segurança adequadas, e notificação à ANPD em caso de vazamento. Esses pontos devem constar nos requisitos não-funcionais desde o desenho técnico, especialmente considerando que o Moneta planeja sincronização bancária automatizada na v3.
+- **Open Finance (Banco Central)**: integração bancária exige consentimento explícito, revogável e com prazo definido — a Nora precisará implementar um fluxo de consentimento robusto caso venha a integrar contas bancárias (previsto para a v3 do produto). Mudança relevante em 2026: portabilidade de crédito via Open Finance com prazo reduzido para 3 dias úteis (crédito pessoal desde fev/2026, consignado previsto até nov/2026) — não afeta diretamente o MVP, mas mostra o escopo crescente do sistema.
+- **LGPD**: dados financeiros exigem consentimento livre, informado e específico (não vale "aceitar tudo"), minimização de dados, medidas de segurança adequadas, e notificação à ANPD em caso de vazamento. Esses pontos devem constar nos requisitos não-funcionais desde o desenho técnico, especialmente considerando que a Nora planeja sincronização bancária automatizada na v3.
 
 ## Fontes
 

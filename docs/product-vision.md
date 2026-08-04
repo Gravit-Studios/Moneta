@@ -1,10 +1,10 @@
-# Moneta — Documento de Visão do Produto (Product Vision v1)
+# Nora — Documento de Visão do Produto (Product Vision v1)
 
 ## Visão
 
-O Moneta é uma plataforma de gestão financeira pessoal focada em planejamento, organização e evolução financeira.
+A Nora é uma plataforma de gestão financeira pessoal focada em planejamento, organização e evolução financeira.
 
-Diferente dos aplicativos tradicionais, que apenas registram receitas e despesas, o Moneta atua como um assistente financeiro inteligente, ajudando o usuário a compreender sua situação atual, prever seu futuro financeiro e atingir objetivos por meio de dados, automações e gamificação.
+Diferente dos aplicativos tradicionais, que apenas registram receitas e despesas, a Nora atua como um assistente financeiro inteligente, ajudando o usuário a compreender sua situação atual, prever seu futuro financeiro e atingir objetivos por meio de dados, automações e gamificação.
 
 A proposta é transformar a relação do usuário com o dinheiro, incentivando hábitos saudáveis e decisões conscientes.
 
@@ -41,7 +41,7 @@ Os aplicativos atuais geralmente possuem alguns problemas:
 - Não estimulam economia.
 - Não trabalham objetivos de vida.
 
-O Moneta nasce para resolver exatamente essas dores.
+A Nora nasce para resolver exatamente essas dores.
 
 ## Proposta de Valor
 
@@ -345,4 +345,4 @@ As respostas devem utilizar exclusivamente os dados financeiros do usuário.
 
 ## Diferencial Competitivo
 
-O Moneta não será apenas um aplicativo para registrar despesas. Seu posicionamento será o de um copiloto financeiro, capaz de organizar a vida financeira, antecipar riscos, sugerir melhorias e motivar o usuário a construir patrimônio ao longo do tempo. Cada funcionalidade deverá responder à pergunta: "Como isso ajuda o usuário a tomar uma decisão melhor hoje?"
+A Nora não será apenas um aplicativo para registrar despesas. Seu posicionamento será o de um copiloto financeiro, capaz de organizar a vida financeira, antecipar riscos, sugerir melhorias e motivar o usuário a construir patrimônio ao longo do tempo. Cada funcionalidade deverá responder à pergunta: "Como isso ajuda o usuário a tomar uma decisão melhor hoje?"

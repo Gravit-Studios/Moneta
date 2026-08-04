@@ -26,7 +26,7 @@ export function LoginPage() {
   return (
     <div className="auth-page">
       <form className="auth-card" onSubmit={handleSubmit}>
-        <h1 className="page-title" style={{ fontSize: 22 }}>Entrar no Moneta</h1>
+        <h1 className="page-title" style={{ fontSize: 22 }}>Entrar na Nora</h1>
 
         <div className="form-field">
           <label htmlFor="email">E-mail</label>

@@ -1,10 +1,10 @@
-# Moneta — Arquitetura Técnica
+# Nora — Arquitetura Técnica
 
 Detalhamento da arquitetura definida no [Product Vision](./product-vision.md), com decisões de estrutura, padrões e requisitos não-funcionais para o MVP.
 
 ## 0. Pivô de arquitetura (pós-Sprint 1)
 
-A Sprint 1 implementou uma API própria em NestJS (JWT, Argon2id, Prisma/PostgreSQL). Depois de revisar como o **SweetHub** (outro projeto do estúdio) está estruturado, decidimos migrar o Moneta para o mesmo padrão, por uma razão prática: o SweetHub não precisa de nenhum host de API separado (Railway/Fly.io/VM) — o **Supabase** já é o back-end inteiro (Auth, Postgres, Row Level Security, Edge Functions para o que precisa de segredo), e o front-end é publicado direto no **Cloudflare Workers** como PWA estática. Isso elimina a decisão de "onde hospedar a API" que travou o deploy.
+A Sprint 1 implementou uma API própria em NestJS (JWT, Argon2id, Prisma/PostgreSQL). Depois de revisar como o **SweetHub** (outro projeto do estúdio) está estruturado, decidimos migrar a Nora para o mesmo padrão, por uma razão prática: o SweetHub não precisa de nenhum host de API separado (Railway/Fly.io/VM) — o **Supabase** já é o back-end inteiro (Auth, Postgres, Row Level Security, Edge Functions para o que precisa de segredo), e o front-end é publicado direto no **Cloudflare Workers** como PWA estática. Isso elimina a decisão de "onde hospedar a API" que travou o deploy.
 
 **O que isso substitui:**
 - ~~API NestJS (`apps/api`)~~ → **Supabase Auth** (cadastro, login, recuperação de senha nativos) + **Supabase Postgres** com RLS.
@@ -19,7 +19,7 @@ Escopo confirmado com o usuário: **projeto web/PWA, não um app nativo**.
 ## 1. Visão geral
 
 ```
-moneta/
+nora/
 ├── apps/
 │   └── web/            # front-end React + TypeScript, PWA, deploy via Cloudflare Workers
 ├── supabase/

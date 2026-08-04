@@ -1,4 +1,4 @@
-# Moneta — Modelagem de Banco de Dados (Sprint 0)
+# Nora — Modelagem de Banco de Dados (Sprint 0)
 
 Schema Prisma/PostgreSQL para as entidades do MVP, definido em [`apps/api/prisma/schema.prisma`](../apps/api/prisma/schema.prisma).
 

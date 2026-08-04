@@ -35,7 +35,7 @@ export function ProfilePage() {
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'meus-dados-moneta.json';
+      link.download = 'meus-dados-nora.json';
       link.click();
       URL.revokeObjectURL(url);
     } catch (err) {
