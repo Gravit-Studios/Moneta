@@ -66,7 +66,6 @@ export function CategoriesPage() {
               id="cat-type"
               value={type}
               onChange={(e) => setType(e.target.value as CategoryType)}
-              style={{ padding: '10px 12px', borderRadius: 8, border: '1px solid var(--color-subtle)' }}
             >
               <option value="expense">Despesa</option>
               <option value="income">Receita</option>

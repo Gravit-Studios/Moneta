@@ -128,7 +128,6 @@ export function InstallmentsPage() {
               id="inst-card"
               value={cardId}
               onChange={(e) => setCardId(e.target.value)}
-              style={{ width: '100%', padding: '10px 12px', borderRadius: 8, border: '1px solid var(--color-subtle)' }}
             >
               {cards.map((card) => (
                 <option key={card.id} value={card.id}>{card.name}</option>
@@ -141,7 +140,6 @@ export function InstallmentsPage() {
               id="inst-category"
               value={categoryId}
               onChange={(e) => setCategoryId(e.target.value)}
-              style={{ width: '100%', padding: '10px 12px', borderRadius: 8, border: '1px solid var(--color-subtle)' }}
             >
               {categories.map((cat) => (
                 <option key={cat.id} value={cat.id}>{cat.name}</option>

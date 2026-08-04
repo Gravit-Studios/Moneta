@@ -119,7 +119,6 @@ export function RecurringBillsPage() {
               id="bill-category"
               value={categoryId}
               onChange={(e) => setCategoryId(e.target.value)}
-              style={{ width: '100%', padding: '10px 12px', borderRadius: 8, border: '1px solid var(--color-subtle)' }}
             >
               {categories.map((cat) => (
                 <option key={cat.id} value={cat.id}>{cat.name}</option>
@@ -132,7 +131,6 @@ export function RecurringBillsPage() {
               id="bill-payment"
               value={paymentMethod}
               onChange={(e) => setPaymentMethod(e.target.value as PaymentMethod)}
-              style={{ width: '100%', padding: '10px 12px', borderRadius: 8, border: '1px solid var(--color-subtle)' }}
             >
               {Object.entries(PAYMENT_LABEL).map(([value, label]) => (
                 <option key={value} value={value}>{label}</option>

@@ -99,7 +99,6 @@ export function IncomesPage() {
               id="income-category"
               value={categoryId}
               onChange={(e) => setCategoryId(e.target.value)}
-              style={{ width: '100%', padding: '10px 12px', borderRadius: 8, border: '1px solid var(--color-subtle)' }}
             >
               {categories.map((cat) => (
                 <option key={cat.id} value={cat.id}>{cat.name}</option>
@@ -112,7 +111,6 @@ export function IncomesPage() {
               id="income-recurrence"
               value={recurrence}
               onChange={(e) => setRecurrence(e.target.value as Recurrence)}
-              style={{ width: '100%', padding: '10px 12px', borderRadius: 8, border: '1px solid var(--color-subtle)' }}
             >
               {Object.entries(RECURRENCE_LABEL).map(([value, label]) => (
                 <option key={value} value={value}>{label}</option>

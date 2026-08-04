@@ -81,7 +81,6 @@ export function QuickAddExpense({ onClose, onCreated }: QuickAddExpenseProps) {
             id="qa-category"
             value={categoryId}
             onChange={(e) => setCategoryId(e.target.value)}
-            style={{ width: '100%', padding: '10px 12px', borderRadius: 8, border: '1px solid var(--color-subtle)' }}
           >
             {categories.map((cat) => (
               <option key={cat.id} value={cat.id}>{cat.name}</option>

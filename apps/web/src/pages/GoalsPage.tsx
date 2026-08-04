@@ -118,7 +118,7 @@ export function GoalsPage() {
                       placeholder="Aportar"
                       value={contributions[goal.id] ?? ''}
                       onChange={(e) => setContributions((prev) => ({ ...prev, [goal.id]: e.target.value }))}
-                      style={{ flex: 1, padding: '8px 10px', borderRadius: 8, border: '1px solid var(--color-subtle)' }}
+                      style={{ flex: 1 }}
                     />
                     <button className="btn btn--ghost" onClick={() => handleContribute(goal)}>Adicionar</button>
                   </div>
