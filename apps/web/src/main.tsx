@@ -1,4 +1,4 @@
-import '@fontsource-variable/plus-jakarta-sans';
+import '@fontsource-variable/inter-tight';
 import '@fontsource/jetbrains-mono/400.css';
 import '@fontsource/jetbrains-mono/600.css';
 import React from 'react';

@@ -16,64 +16,81 @@ $gray-800: #262A34;
 $gray-900: #181B22;
 $gray-950: #0E1015;
 
-// Escala primária — roxo vívido (#6B46FF, ajuste de marca). Ação, links,
-// elementos interativos.
-$brand-50:  #F2EEFF;
-$brand-100: #E5DCFF;
-$brand-200: #CBB8FF;
-$brand-300: #AD8FFF;
-$brand-400: #8F68FF;
-$brand-500: #6B46FF;
-$brand-600: #5732E0;
-$brand-700: #4325B0;
-$brand-800: #331C86;
-$brand-900: #241360;
-$brand-950: #180D42;
+// Escala primária — verde-limão pastel (referência de identidade visual
+// enviada pelo usuário, swatch 01). Ação, links, elementos interativos.
+// Como o tom é claro por natureza (diferente do roxo/ciano anteriores),
+// o texto sobre ele vira escuro, não claro — ver --color-on-primary em
+// _tokens.scss, ajustado nos dois temas por causa dessa troca.
+$brand-50:  #FAFCEF;
+$brand-100: #F2F7D6;
+$brand-200: #E6EFAF;
+$brand-300: #DCE997;
+$brand-400: #D9E88A; // swatch de referência
+$brand-500: #C8DB68;
+$brand-600: #AEC24A;
+$brand-700: #8DA233;
+$brand-800: #6D7D26;
+$brand-900: #4C5A1A;
+$brand-950: #33400F;
 
-// Escala secundária — ciano/teal vívido (#00D1C1, ajuste de marca), pousa
-// no stop 400 (mesma convenção anterior: 400 = tom vívido de destaque,
-// 500 = versão levemente mais escura para texto/estado "concluído").
-$secondary-50:  #E3FBFA;
-$secondary-100: #B3F3EF;
-$secondary-200: #7FEAE3;
-$secondary-300: #47DFD6;
-$secondary-400: #00D1C1;
-$secondary-500: #00AEA0;
-$secondary-600: #008D81;
-$secondary-700: #007067;
-$secondary-800: #00564F;
-$secondary-900: #00403B;
-$secondary-950: #002926;
+// Escala secundária — grafite quase preto (referência, swatch 02). Vira a
+// base "ink" do sistema — texto forte, superfícies escuras — mais do que
+// um acento vívido; a saturação baixa é intencional (é literalmente a
+// cor do card escuro da referência, não um teal/verde saturado).
+$secondary-50:  #F2F3F4;
+$secondary-100: #E3E5E7;
+$secondary-200: #C8CCD0;
+$secondary-300: #A7ADB3;
+$secondary-400: #848B92;
+$secondary-500: #636B73;
+$secondary-600: #474F56;
+$secondary-700: #343A40;
+$secondary-800: #23272B; // swatch de referência
+$secondary-900: #16181B;
+$secondary-950: #0B0C0E;
 
-// Terciária — âmbar (#FFC857, ajuste de marca). Usada em conquistas/
-// gamificação e como cor de estado "atenção" (status-warn).
-$gold-300: #FFDFA3;
-$gold-400: #FFC857;
-$gold-500: #E0A83A;
-$gold-600: #B8862A;
+// Terciária — cinza-greige claro (referência, swatch 03). Papel neutro/
+// decorativo (fundo alternativo, superfícies), não é mais usada pra
+// "atenção" — status-warn agora tem âmbar dedicado (ver abaixo), porque
+// um cinza claro não carrega sinal de urgência nenhum.
+$tertiary-50:  #FCFBF9;
+$tertiary-100: #F5F3EF;
+$tertiary-200: #EAE7E1; // swatch de referência
+$tertiary-300: #DAD6CD;
+$tertiary-400: #C6C1B4;
+$tertiary-500: #ACA697;
+$tertiary-600: #8C8676;
 
-$on-highlight: #0D2318;
+// Âmbar dedicado — só pro estado "atenção" (contas perto de vencer,
+// halo de alerta do NoraMark). Desacoplado da escala terciária acima
+// porque essa virou neutra; o alerta precisa continuar visualmente
+// distinto de "informativo".
+$warn-400: #FFC857;
+$warn-500: #E0A83A;
+$warn-600: #B8862A;
+
+$on-highlight: #16181B;
 
 // Paleta de categorias — 8 matizes distintos entre si, ancorados nas cores
 // primária/secundária da marca + variações complementares.
-$cat-1: $secondary-500; // verde
-$cat-2: $brand-500;     // azul
-$cat-3: #C89144;        // âmbar
-$cat-4: #C2694F;        // terracota suave
-$cat-5: #8B7FD1;        // lilás
-$cat-6: #4FA8B0;        // teal
-$cat-7: #C77FA6;        // rosa
-$cat-8: #7A8194;        // grafite-azulado
+$cat-1: #4C8A5E; // verde (independente do brand, que virou pastel — categoria precisa de mais contraste como texto/dot)
+$cat-2: #4F6EF7; // azul
+$cat-3: #C89144; // âmbar
+$cat-4: #C2694F; // terracota suave
+$cat-5: #8B7FD1; // lilás
+$cat-6: #4FA8B0; // teal
+$cat-7: #C77FA6; // rosa
+$cat-8: $secondary-500; // grafite
 
 // Cores de status semânticas.
-$status-info:    $brand-600;
-$status-warn:    $gold-500;
-$status-done:    $secondary-600;
+$status-info:    #4F6EF7;
+$status-warn:    $warn-500;
+$status-done:    #3E8F63;
 $status-pending: $gray-500;
 $status-danger:  #C2694F;
 
-$status-info-dark:    $brand-300;
-$status-warn-dark:    $gold-400;
-$status-done-dark:    $secondary-400;
+$status-info-dark:    #93A9F9;
+$status-warn-dark:    $warn-400;
+$status-done-dark:    #6BC694;
 $status-pending-dark: $gray-400;
 $status-danger-dark:  #DB9075;

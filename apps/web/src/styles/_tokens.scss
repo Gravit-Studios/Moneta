@@ -3,18 +3,26 @@
 // Tokens semânticos — 8 papéis (background, surface, subtle, muted, default,
 // emphasis, strong, on-primary), mesma convenção do color-palette-auto:
 // neutros vêm da escala $gray-*, marca/ação vem da escala $brand-*.
+//
+// Nota sobre a troca de paleta (verde-limão pastel como primária): como
+// --color-emphasis agora é claro por natureza, --color-on-primary virou
+// texto ESCURO em vez de claro — o oposto do que era com o roxo/ciano
+// anteriores. --color-highlight (grafite, da escala secundária) também
+// inverteu: bg escuro em modo claro precisa de texto claro, e vice-versa
+// em modo escuro, onde o próprio highlight fica mais claro pra continuar
+// visível contra o fundo escuro.
 :root {
   // Tokens — light
-  --color-background:  #{$gray-50};
+  --color-background:  #{$tertiary-100};
   --color-surface:     #{$white};
   --color-subtle:      #{$gray-200};
   --color-muted:       #{$gray-500};
   --color-default:     #{$gray-900};
-  --color-emphasis:    #{$brand-600};
-  --color-strong:      #{$brand-700};
-  --color-on-primary:  #{$gray-50};
-  --color-highlight:   #{$secondary-500};
-  --color-on-highlight: #{$on-highlight};
+  --color-emphasis:    #{$brand-500};
+  --color-strong:      #{$brand-600};
+  --color-on-primary:  #{$gray-900};
+  --color-highlight:   #{$secondary-700};
+  --color-on-highlight: #{$gray-50};
 
   // Status — light
   --color-status-info:    #{$status-info};
@@ -70,8 +78,8 @@
   --color-emphasis:   #{$brand-400};
   --color-strong:     #{$brand-300};
   --color-on-primary: #{$gray-950};
-  --color-highlight:  #{$secondary-400};
-  --color-on-highlight: #{$on-highlight};
+  --color-highlight:  #{$secondary-300};
+  --color-on-highlight: #{$gray-950};
 
   --color-status-info:    #{$status-info-dark};
   --color-status-warn:    #{$status-warn-dark};
@@ -88,16 +96,16 @@
 // ...e o toggle explícito de tema sempre vence a media query, nos dois sentidos.
 :root[data-theme='dark'] { @include dark-tokens; }
 :root[data-theme='light'] {
-  --color-background: #{$gray-50};
+  --color-background: #{$tertiary-100};
   --color-surface:    #{$white};
   --color-subtle:     #{$gray-200};
   --color-muted:      #{$gray-500};
   --color-default:    #{$gray-900};
-  --color-emphasis:   #{$brand-600};
-  --color-strong:     #{$brand-700};
-  --color-on-primary: #{$gray-50};
-  --color-highlight:  #{$secondary-500};
-  --color-on-highlight: #{$on-highlight};
+  --color-emphasis:   #{$brand-500};
+  --color-strong:     #{$brand-600};
+  --color-on-primary: #{$gray-900};
+  --color-highlight:  #{$secondary-700};
+  --color-on-highlight: #{$gray-50};
 
   --color-status-info:    #{$status-info};
   --color-status-warn:    #{$status-warn};
