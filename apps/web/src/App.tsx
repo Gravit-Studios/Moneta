@@ -7,6 +7,7 @@ import { CardsPage } from './pages/CardsPage';
 import { CategoriesPage } from './pages/CategoriesPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { ExpensesPage } from './pages/ExpensesPage';
+import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
 import { GoalsPage } from './pages/GoalsPage';
 import { IncomesPage } from './pages/IncomesPage';
 import { InstallmentsPage } from './pages/InstallmentsPage';
@@ -17,12 +18,15 @@ import { ProfilePage } from './pages/ProfilePage';
 import { RecurringBillsPage } from './pages/RecurringBillsPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { ReportsPage } from './pages/ReportsPage';
+import { ResetPasswordPage } from './pages/ResetPasswordPage';
 
 export function App() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/cadastro" element={<RegisterPage />} />
+      <Route path="/esqueci-senha" element={<ForgotPasswordPage />} />
+      <Route path="/redefinir-senha" element={<ResetPasswordPage />} />
       <Route element={<RequireAuth />}>
         <Route path="/onboarding" element={<OnboardingPage />} />
         <Route element={<AppLayout />}>

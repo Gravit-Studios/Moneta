@@ -2,6 +2,7 @@ import { FormEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { NoraMark } from '../components/NoraMark';
 import { api } from '../lib/api';
+import { friendlyAuthError } from '../lib/authErrors';
 
 export function RegisterPage() {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ export function RegisterPage() {
       }
       navigate('/onboarding');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Não foi possível criar sua conta.');
+      setError(err instanceof Error ? friendlyAuthError(err.message) : 'Não foi possível criar sua conta.');
     } finally {
       setLoading(false);
     }

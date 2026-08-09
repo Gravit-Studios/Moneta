@@ -52,6 +52,15 @@ export function ProfilePage() {
     }
   }
 
+  async function handleLogout() {
+    try {
+      await api.logout();
+      navigate('/login');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Não foi possível sair.');
+    }
+  }
+
   return (
     <div>
       <h1 className="page-title">Perfil</h1>
@@ -68,6 +77,9 @@ export function ProfilePage() {
         ) : (
           <p className="text-muted">Carregando…</p>
         )}
+        <button className="btn btn--ghost" onClick={handleLogout} style={{ marginTop: 12 }}>
+          Sair
+        </button>
       </div>
 
       {stats && (

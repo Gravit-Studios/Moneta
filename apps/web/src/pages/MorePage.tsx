@@ -12,6 +12,7 @@ const MORE_ITEMS = [
   { to: '/metas', label: 'Metas' },
   { to: '/calendario', label: 'Calendário' },
   { to: '/relatorios', label: 'Relatórios' },
+  { to: '/perfil', label: 'Perfil' },
 ];
 
 export function MorePage() {

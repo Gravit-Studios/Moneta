@@ -12,11 +12,46 @@ import { listIncomes } from '../lib/incomes';
 import { noraMessage, NoraMessageResult } from '../lib/noraMessage';
 import { Category, Expense, Goal, Income } from '../lib/types';
 
+// Ícones em SVG line-icon (1.5px stroke) — o Documento Técnico de
+// Identidade Visual pede pra evitar ícone financeiro genérico com
+// cifrão/dinheiro dominante, então nada de emoji 💰💸 aqui.
+function IconDespesas() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M13 5 5 13m0-8h8v8" />
+    </svg>
+  );
+}
+function IconReceitas() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m11 19 8-8m0 8V11m0 8h-8" />
+    </svg>
+  );
+}
+function IconMetas() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+      <circle cx="12" cy="12" r="8" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="12" cy="12" r="0.6" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+function IconCartoes() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="6" width="18" height="13" rx="2.2" />
+      <path d="M3 10.5h18" />
+    </svg>
+  );
+}
+
 const SHORTCUTS = [
-  { to: '/despesas', icon: '💸', label: 'Despesas' },
-  { to: '/receitas', icon: '💰', label: 'Receitas' },
-  { to: '/metas', icon: '🎯', label: 'Metas' },
-  { to: '/cartoes', icon: '💳', label: 'Cartões' },
+  { to: '/despesas', icon: <IconDespesas />, label: 'Despesas' },
+  { to: '/receitas', icon: <IconReceitas />, label: 'Receitas' },
+  { to: '/metas', icon: <IconMetas />, label: 'Metas' },
+  { to: '/cartoes', icon: <IconCartoes />, label: 'Cartões' },
 ];
 
 function isSameMonth(dateStr: string, ref: Date): boolean {
@@ -103,6 +138,21 @@ export function DashboardPage() {
             <div className="hero-number">{currency(saldo)}</div>
           </div>
 
+          <h2 className="page-title" style={{ fontSize: 17, marginTop: 32 }}>Próximas contas</h2>
+          {proximasContas.length === 0 ? (
+            <p className="text-muted">Nenhuma conta em aberto.</p>
+          ) : (
+            <div className="list-card">
+              {proximasContas.map((expense) => (
+                <div className="list-row" key={expense.id}>
+                  <span>{expense.name}</span>
+                  <span className="text-muted">{expense.due_date.split('-').reverse().join('/')}</span>
+                  <span className="list-row__value">{currency(expense.value)}</span>
+                </div>
+              ))}
+            </div>
+          )}
+
           <div className="shortcut-row">
             {SHORTCUTS.map((s) => (
               <Link key={s.to} to={s.to} className="shortcut-item">
@@ -141,21 +191,6 @@ export function DashboardPage() {
             </>
           )}
 
-          <h2 className="page-title" style={{ fontSize: 17, marginTop: 32 }}>Próximas contas</h2>
-          {proximasContas.length === 0 ? (
-            <p className="text-muted">Nenhuma conta em aberto.</p>
-          ) : (
-            <div className="list-card">
-              {proximasContas.map((expense) => (
-                <div className="list-row" key={expense.id}>
-                  <span>{expense.name}</span>
-                  <span className="text-muted">{expense.due_date.split('-').reverse().join('/')}</span>
-                  <span className="list-row__value">{currency(expense.value)}</span>
-                </div>
-              ))}
-            </div>
-          )}
-
           <h2 className="page-title" style={{ fontSize: 17, marginTop: 32 }}>Meta principal</h2>
           {mainGoal ? (
             <div className="widget" style={{ maxWidth: 320 }}>
@@ -178,16 +213,10 @@ export function DashboardPage() {
             <p className="text-muted">Nenhuma meta em andamento.</p>
           )}
 
-          <h2 className="page-title" style={{ fontSize: 17, marginTop: 32 }}>Resumo do mês</h2>
-          <div className="widget-grid" style={{ maxWidth: 420 }}>
-            <div className="widget">
-              <div className="widget__label">Receitas</div>
-              <div className="widget__value">{currency(receitasMes)}</div>
-            </div>
-            <div className="widget">
-              <div className="widget__label">Despesas</div>
-              <div className="widget__value">{currency(despesasMes)}</div>
-            </div>
+          <h2 className="page-title" style={{ fontSize: 17, marginTop: 32 }}>Receitas do mês</h2>
+          <div className="widget" style={{ maxWidth: 220 }}>
+            <div className="widget__label">Receitas</div>
+            <div className="widget__value">{currency(receitasMes)}</div>
           </div>
         </>
       )}

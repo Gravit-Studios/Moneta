@@ -207,7 +207,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  color: var(--color-emphasis);
 }
 
 // Destaque de categorias — donut + cards coloridos, o "gráfico" pedido
@@ -228,10 +228,10 @@
 }
 
 .category-tile {
-  border-radius: $r-lg;
+  border-radius: $r-xl;
   padding: $sp2 $sp3;
-  background: color-mix(in srgb, var(--cat-color) 16%, var(--color-surface));
-  border: 1px solid color-mix(in srgb, var(--cat-color) 30%, transparent);
+  background: color-mix(in srgb, var(--cat-color) 12%, var(--color-surface));
+  border-left: 3px solid var(--cat-color);
 }
 
 .category-tile__name {
@@ -247,13 +247,23 @@
   font-weight: 700;
   font-size: 14px;
   margin-top: 2px;
+  color: var(--color-default);
 }
 
+// Texto sempre no token neutro (não na cor da categoria) — o tom da
+// paleta varia demais de luminosidade pra garantir AA como cor de
+// texto; a cor da categoria fica só na borda/dot (ver .category-tile).
 .category-tile__pct {
   font-size: 11px;
-  color: var(--cat-color);
+  color: var(--color-muted);
   font-weight: 600;
   margin-top: 2px;
+}
+
+@media (max-width: 480px) {
+  .category-highlight { gap: $sp3; }
+  .category-highlight__tiles { grid-template-columns: repeat(3, 1fr); }
+  .category-donut { width: 96px !important; height: 96px !important; }
 }
 
 .widget-grid {

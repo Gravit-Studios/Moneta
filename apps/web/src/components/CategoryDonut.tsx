@@ -22,7 +22,7 @@ export function CategoryDonut({ slices, centerLabel, centerValue, size = 132 }: 
   let offsetDeg = -90;
 
   return (
-    <div style={{ position: 'relative', width: size, height: size, flex: 'none' }}>
+    <div className="category-donut" style={{ position: 'relative', width: size, height: size, flex: 'none' }}>
       <svg width={size} height={size} viewBox="0 0 120 120">
         <circle cx="60" cy="60" r={radius} fill="none" stroke="var(--color-subtle)" strokeWidth="14" />
         {total > 0 &&

@@ -2,6 +2,7 @@ import { FormEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { NoraMark } from '../components/NoraMark';
 import { api } from '../lib/api';
+import { friendlyAuthError } from '../lib/authErrors';
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -9,6 +10,7 @@ export function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
@@ -16,12 +18,21 @@ export function LoginPage() {
     setLoading(true);
     try {
       await api.login(email, password);
-      navigate('/');
+      setSuccess(true);
+      setTimeout(() => navigate('/'), 650);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Não foi possível entrar.');
-    } finally {
+      setError(err instanceof Error ? friendlyAuthError(err.message) : 'Não foi possível entrar.');
       setLoading(false);
     }
+  }
+
+  if (success) {
+    return (
+      <div className="success-overlay">
+        <div className="success-burst"><NoraMark size={40} state="success" /></div>
+        <div className="success-message">Bem-vindo(a) de volta!</div>
+      </div>
+    );
   }
 
   return (
@@ -58,7 +69,10 @@ export function LoginPage() {
           {loading ? 'Entrando…' : 'Entrar'}
         </button>
 
-        <p className="text-muted" style={{ marginTop: 16, textAlign: 'center' }}>
+        <p className="text-muted" style={{ marginTop: 12, textAlign: 'center' }}>
+          <Link to="/esqueci-senha">Esqueci minha senha</Link>
+        </p>
+        <p className="text-muted" style={{ marginTop: 4, textAlign: 'center' }}>
           Ainda não tem conta? <Link to="/cadastro">Criar conta</Link>
         </p>
       </form>
