@@ -1,18 +1,32 @@
-import { FormEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { FormEvent, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { NoraMark } from '../components/NoraMark';
+import { friendlyAuthError } from '../lib/authErrors';
 import { supabase } from '../lib/supabaseClient';
 
 // Chegamos aqui pelo link de e-mail do resetPasswordForEmail — o
 // supabase-js já detecta o token na URL e abre uma sessão temporária de
 // recuperação sozinho (detectSessionInUrl, padrão do client). Só falta
 // pedir a senha nova e trocar.
+//
+// Segurança: rota pública (fora do RequireAuth) por necessidade — o link
+// chega por e-mail, sem o usuário estar logado ainda. A única credencial
+// válida aqui é o token de recovery na própria URL (de posse de quem tem
+// acesso ao e-mail); sem ele, supabase.auth.getSession() não retorna
+// sessão nenhuma, e checamos isso explicitamente antes de mostrar o
+// formulário — evita a tela confusa de "link genérico sempre aberto"
+// respondendo com erro técnico só depois do submit.
 export function ResetPasswordPage() {
   const navigate = useNavigate();
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
+  const [hasSession, setHasSession] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setHasSession(!!data.session));
+  }, []);
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
@@ -28,10 +42,31 @@ export function ResetPasswordPage() {
       setDone(true);
       setTimeout(() => navigate('/login'), 1600);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Não foi possível redefinir a senha.');
+      setError(err instanceof Error ? friendlyAuthError(err.message) : 'Não foi possível redefinir a senha.');
     } finally {
       setLoading(false);
     }
+  }
+
+  if (hasSession === false) {
+    return (
+      <div className="auth-page">
+        <div className="auth-card" style={{ textAlign: 'center' }}>
+          <div style={{ margin: '8px auto 16px' }}><NoraMark size={48} state="alert" /></div>
+          <h1 className="page-title" style={{ fontSize: 20 }}>Esse link não é mais válido</h1>
+          <p className="text-muted" style={{ marginTop: 8 }}>
+            Ele pode ter expirado ou já ter sido usado. Pede um novo.
+          </p>
+          <Link to="/esqueci-senha" className="btn btn--primary" style={{ marginTop: 20, display: 'inline-block' }}>
+            Pedir novo link
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  if (hasSession === null) {
+    return <div className="auth-page" />;
   }
 
   if (done) {

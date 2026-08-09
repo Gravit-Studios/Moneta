@@ -17,6 +17,9 @@ export function friendlyAuthError(raw: string): string {
   if (msg.includes('rate limit')) {
     return 'Muitas tentativas seguidas — espera um minuto e tenta de novo.';
   }
+  if (msg.includes('session') || msg.includes('token')) {
+    return 'Esse link expirou ou já foi usado — pede um novo na tela de recuperação de senha.';
+  }
   if (msg.includes('network') || msg.includes('fetch')) {
     return 'Não consegui falar com o servidor agora. Confere sua conexão e tenta de novo.';
   }
