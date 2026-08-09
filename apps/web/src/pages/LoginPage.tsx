@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { NoraMark } from '../components/NoraMark';
 import { api } from '../lib/api';
 import { friendlyAuthError } from '../lib/authErrors';
+import { hasCompletedOnboarding } from './OnboardingPage';
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -19,7 +20,11 @@ export function LoginPage() {
     try {
       await api.login(email, password);
       setSuccess(true);
-      setTimeout(() => navigate('/'), 650);
+      // Primeiro acesso (ou onboarding nunca concluído nesse navegador) —
+      // mostra o tutorial em vez de ir direto pro Dashboard, mesmo fora
+      // do fluxo de cadastro (ex.: sessão expirou e a pessoa loga de novo).
+      const destination = hasCompletedOnboarding() ? '/' : '/onboarding';
+      setTimeout(() => navigate(destination), 650);
     } catch (err) {
       setError(err instanceof Error ? friendlyAuthError(err.message) : 'Não foi possível entrar.');
       setLoading(false);
