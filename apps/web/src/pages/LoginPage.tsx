@@ -5,6 +5,13 @@ import { api } from '../lib/api';
 import { friendlyAuthError } from '../lib/authErrors';
 import { hasCompletedOnboarding } from './OnboardingPage';
 
+// Referência: telas de onboarding tipo "Paytin" (fundo cheio na cor
+// primária, ilustração central, título grande, CTA em pílula escura) —
+// adaptado pra reforçar a personalidade da Nora como assistente, não
+// como decoração: o núcleo orbital ocupa o lugar da "ilustração",
+// grande o bastante pra ler como protagonista da tela, não como logo
+// pequeno de canto. Quando as ilustrações do ChatGPT chegarem, entram
+// aqui no lugar do NoraMark ampliado.
 export function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
@@ -41,11 +48,17 @@ export function LoginPage() {
   }
 
   return (
-    <div className="auth-page">
-      <form className="auth-card" onSubmit={handleSubmit}>
-        <div style={{ marginBottom: 16 }}><NoraMark size={40} /></div>
-        <h1 className="page-title" style={{ fontSize: 22 }}>Entrar na Nora</h1>
+    <div className="login-hero">
+      <div className="login-hero__illustration">
+        <NoraMark size={112} state="welcome" />
+      </div>
 
+      <h1 className="login-hero__title">Oi, eu sou a Nora.</h1>
+      <p className="login-hero__subtitle">
+        Sua assistente financeira — acompanho seu dia a dia e aviso antes de virar problema.
+      </p>
+
+      <form className="login-hero__form" onSubmit={handleSubmit}>
         <div className="form-field">
           <label htmlFor="email">E-mail</label>
           <input
@@ -68,16 +81,16 @@ export function LoginPage() {
           />
         </div>
 
-        {error && <p className="text-muted" style={{ color: 'var(--color-status-danger)' }}>{error}</p>}
+        {error && <p className="login-hero__error">{error}</p>}
 
-        <button className="btn btn--primary" type="submit" disabled={loading} style={{ width: '100%' }}>
+        <button className="login-hero__cta" type="submit" disabled={loading}>
           {loading ? 'Entrando…' : 'Entrar'}
         </button>
 
-        <p className="text-muted" style={{ marginTop: 12, textAlign: 'center' }}>
+        <p className="login-hero__link">
           <Link to="/esqueci-senha">Esqueci minha senha</Link>
         </p>
-        <p className="text-muted" style={{ marginTop: 4, textAlign: 'center' }}>
+        <p className="login-hero__link">
           Ainda não tem conta? <Link to="/cadastro">Criar conta</Link>
         </p>
       </form>

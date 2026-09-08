@@ -706,6 +706,102 @@ select:focus-visible {
   padding: $sp5;
 }
 
+// Tela de login — fundo cheio na cor primária, ilustração da Nora como
+// protagonista (referência do usuário: onboarding tipo Paytin), tipografia
+// grande. Página própria, não reaproveita .auth-page/.auth-card — as
+// outras telas de auth (cadastro, esqueci senha) seguem na fila de
+// aprovação antes de herdar esse tratamento.
+.login-hero {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--color-emphasis);
+  padding: $sp8 $sp5 $sp6;
+  text-align: center;
+}
+
+.login-hero__illustration {
+  margin: $sp6 0 $sp5;
+  animation: modal-pop-in $t-slow;
+  // O NoraMark usa --color-strong/--color-emphasis pro núcleo e
+  // --color-highlight pro anel — aqui o fundo da página JÁ É
+  // --color-emphasis (verde), então sem isso o símbolo some dentro do
+  // próprio fundo. Reaproveita os tokens existentes (não hex fixo) pra
+  // continuar funcionando nos dois temas: núcleo escuro (contraste com
+  // o fundo verde), anel claro (contraste com o núcleo escuro).
+  --color-strong: var(--color-on-primary);
+  --color-emphasis: var(--color-highlight);
+  --color-highlight: var(--color-surface);
+}
+
+.login-hero__title {
+  font-family: $font-display;
+  font-weight: 800;
+  font-size: 34px;
+  line-height: 1.1;
+  color: var(--color-highlight);
+  margin: 0 0 $sp3;
+  max-width: 320px;
+}
+
+.login-hero__subtitle {
+  color: var(--color-highlight);
+  opacity: 0.75;
+  font-size: 15px;
+  max-width: 300px;
+  margin: 0 0 $sp8;
+}
+
+.login-hero__form {
+  width: 100%;
+  max-width: 340px;
+  margin-top: auto;
+  text-align: left;
+
+  .form-field label { color: var(--color-highlight); opacity: 0.75; }
+  input {
+    background: var(--color-surface);
+    border-color: transparent;
+  }
+}
+
+.login-hero__error {
+  color: var(--color-status-danger);
+  background: var(--color-surface);
+  border-radius: $r-lg;
+  padding: $sp2 $sp3;
+  font-size: 13.5px;
+  margin: 0 0 $sp3;
+}
+
+.login-hero__cta {
+  width: 100%;
+  border: none;
+  border-radius: $r-2xl;
+  padding: $sp3 $sp5;
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: 16px;
+  background: var(--color-highlight);
+  color: var(--color-on-highlight);
+  cursor: pointer;
+  transition: transform $t-fast, opacity $t-fast;
+
+  &:active { transform: scale(.97); }
+  &:disabled { opacity: 0.7; cursor: default; }
+}
+
+.login-hero__link {
+  text-align: center;
+  margin-top: $sp3;
+  font-size: 13.5px;
+  color: var(--color-highlight);
+
+  a { color: inherit; font-weight: 600; }
+}
+
 .auth-card {
   position: relative;
   width: 100%;
